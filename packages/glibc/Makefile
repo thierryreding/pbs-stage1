@@ -59,6 +59,19 @@ stage2-conf-args = \
 stage2-conf-vars = \
 	libc_cv_ssp=no
 
+#
+# On IA64, the programs built by glibc cannot be properly linked because
+# they reference symbols defined only by the shared libunwind that is
+# only built by stage2 of gcc. We work around this by instructing the
+# build system to not build the problematic programs.
+#
+ifeq ($(arch),ia64)
+install: $(pkgbuilddir)/stage2/configparms
+
+$(pkgbuilddir)/stage2/configparms:
+	echo "build-programs = no" > $@
+endif
+
 install: | $(pkgbuilddir)/stage2
 	cd $(pkgbuilddir)/stage2 && \
 		$(env) ../../configure $(stage2-conf-args) $(stage2-conf-vars)
