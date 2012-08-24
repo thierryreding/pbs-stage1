@@ -8,6 +8,7 @@ tarballs = $(package)-$(version).tar.xz
 
 pkgsrcdir = $(builddir)/$(package)-$(version)
 pkgbuilddir = $(pkgsrcdir)/target-$(target)
+srcdir = $(CURDIR)/packages/$(package)
 
 include packages/common.mk
 
@@ -21,7 +22,11 @@ ifeq ($(arch),sh4)
   arch = sh
 endif
 
-$(pkgbuilddir): | $(pkgsrcdir)
+$(pkgsrcdir)/stamp-patched:
+	cd $(pkgsrcdir) && patch -p1 < $(srcdir)/patches/alpha.patch
+	touch $@
+
+$(pkgbuilddir): | $(pkgsrcdir) $(pkgsrcdir)/stamp-patched
 	mkdir -p $@
 
 common-vars = \
