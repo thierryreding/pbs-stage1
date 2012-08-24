@@ -56,6 +56,9 @@ stage2-conf-args = \
 	--with-headers=$(sysroot-prefix)/include \
 	--enable-addons=ports
 
+stage2-conf-vars = \
+	libc_cv_ssp=no
+
 install: | $(pkgbuilddir)/stage2
 	cd $(pkgbuilddir)/stage2 && \
 		$(env) ../../configure $(stage2-conf-args) $(stage2-conf-vars)
