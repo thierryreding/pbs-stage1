@@ -71,6 +71,7 @@ stage2-conf-args = \
 	--with-mpfr=$(prefix) \
 	--with-gmp=$(prefix) \
 	--with-ppl=$(prefix) \
+	--disable-ppl-version-check \
 	--with-system-zlib \
 	--enable-languages=c,c++,objc,obj-c++ \
 	--enable-threads=posix \

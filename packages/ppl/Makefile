@@ -1,5 +1,5 @@
 package = ppl
-version = 0.12.1
+version = 1.0
 
 location = http://bugseng.com/products/$(package)/download/ftp/releases/$(version)
 tarballs = $(package)-$(version).tar.xz
@@ -13,7 +13,8 @@ conf-args = \
 	--prefix=$(prefix) \
 	--infodir=$(prefix)/share/info \
 	--mandir=$(prefix)/share/man \
-	--with-gmp=$(prefix)
+	--with-gmp=$(prefix) \
+	--enable-interfaces="c,cxx"
 
 install: | $(pkgbuilddir)
 	cd $(pkgbuilddir) && ./configure $(conf-args)
