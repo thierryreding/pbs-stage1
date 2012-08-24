@@ -17,6 +17,10 @@ else
   defconfig = defconfig
 endif
 
+ifeq ($(arch),sh4)
+  arch = sh
+endif
+
 $(pkgbuilddir): | $(pkgsrcdir)
 	mkdir -p $@
 

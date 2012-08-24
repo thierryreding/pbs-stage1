@@ -1,4 +1,4 @@
-arch = sh
+arch = sh4
 os = linux
 libc = gnu
 
