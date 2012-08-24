@@ -17,6 +17,10 @@ $(pkgsrcdir)/ports: | $(pkgsrcdir)
 $(pkgbuilddir)/stage1: | $(pkgsrcdir)/ports
 	mkdir -p $@
 
+install-vars = \
+	install_root=$(sysroot) \
+	prefix=/usr
+
 stage1-conf-args = \
 	--build=$(build) \
 	--host=$(host) \
@@ -58,8 +62,10 @@ ifeq ($(arch),sparc)
 endif
 
 install-stage1: | $(pkgbuilddir)/stage1
-	cd $(pkgbuilddir)/stage1 && $(env) ../../configure $(stage1-conf-args) $(stage1-conf-vars)
-	cd $(pkgbuilddir)/stage1 && $(env) $(MAKE) install_root=$(sysroot) install-headers
+	cd $(pkgbuilddir)/stage1 && \
+		$(env) ../../configure $(stage1-conf-args) $(stage1-conf-vars)
+	cd $(pkgbuilddir)/stage1 && \
+		$(env) $(MAKE) $(install-vars) install-headers
 	touch $(sysroot-prefix)/include/gnu/stubs.h
 
 $(pkgbuilddir)/stage2: | $(pkgsrcdir)/ports
@@ -77,8 +83,11 @@ stage2-conf-args = \
 	--enable-addons=ports
 
 install: | $(pkgbuilddir)/stage2
-	cd $(pkgbuilddir)/stage2 && $(env) ../../configure $(stage2-conf-args)
-	cd $(pkgbuilddir)/stage2 && $(env) $(MAKE) -j $(num-jobs)
-	cd $(pkgbuilddir)/stage2 && $(env) $(MAKE) install_root=$(sysroot) install
+	cd $(pkgbuilddir)/stage2 && \
+		$(env) ../../configure $(stage2-conf-args) $(stage2-conf-vars)
+	cd $(pkgbuilddir)/stage2 && \
+		$(env) $(MAKE) -j $(num-jobs)
+	cd $(pkgbuilddir)/stage2 && \
+		$(env) $(MAKE) $(install-vars) install
 
 .PHONY: install-stage1 install
