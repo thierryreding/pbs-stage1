@@ -9,6 +9,9 @@ pkgbuilddir = $(pkgsrcdir)/target-$(target)
 
 include packages/common.mk
 
+$(pkgbuilddir)/stage1: | $(pkgsrcdir)
+	mkdir -p $@
+
 stage1-conf-args = \
 	--target=$(host) \
 	--prefix=$(prefix) \
@@ -25,7 +28,7 @@ stage1-conf-args = \
 	--with-gmp=$(prefix) \
 	--with-ppl=$(prefix) \
 	--enable-languages=c \
-	--disable-threads \
+	--enable-threads=posix \
 	--disable-shared \
 	--disable-nls
 
@@ -36,9 +39,6 @@ ifeq ($(os),none)
     stage1-conf-args += --enable-interwork
   endif
 endif
-
-$(pkgbuilddir)/stage1: | $(pkgsrcdir)
-	mkdir -p $@
 
 install-stage1: | $(pkgbuilddir)/stage1
 	cd $(pkgbuilddir)/stage1 && $(env) ../../configure $(stage1-conf-args)
@@ -71,8 +71,9 @@ stage2-conf-args = \
 	--with-mpfr=$(prefix) \
 	--with-gmp=$(prefix) \
 	--with-ppl=$(prefix) \
+	--with-system-zlib \
 	--enable-languages=c,c++,objc,obj-c++ \
-	--disable-libssp \
+	--enable-threads=posix \
 	--disable-nls
 
 ifeq ($(os),none)
@@ -87,6 +88,9 @@ install: | $(pkgbuilddir)/stage2
 	cd $(pkgbuilddir)/stage2 && $(env) ../../configure $(stage2-conf-args)
 	cd $(pkgbuilddir)/stage2 && $(env) $(MAKE) -j $(num-jobs)
 	cd $(pkgbuilddir)/stage2 && $(env) $(MAKE) install
+	rm $(prefix)/bin/$(target)-gcc && \
+		sed -e 's,@VERSION@,$(version),' support/gcc.in > $(prefix)/bin/$(target)-gcc && \
+		chmod a+x $(prefix)/bin/$(target)-gcc
 	mv $(prefix)/bin/$(target)-cpp $(prefix)/bin/$(target)-cpp-$(version) && ln -s $(target)-gcc $(prefix)/bin/$(target)-cpp
 	mv $(prefix)/bin/$(target)-g++ $(prefix)/bin/$(target)-g++-$(version) && ln -s $(target)-gcc $(prefix)/bin/$(target)-g++
 	mv $(prefix)/bin/$(target)-c++ $(prefix)/bin/$(target)-c++-$(version) && ln -s $(target)-gcc $(prefix)/bin/$(target)-c++
