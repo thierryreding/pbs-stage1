@@ -35,32 +35,6 @@ stage1-conf-args = \
 stage1-conf-vars = \
 	libc_cv_forced_unwind=yes
 
-ifeq ($(arch),x86)
-  stage1-conf-vars += \
-	libc_cv_386_tls=yes
-endif
-
-ifeq ($(arch),mips)
-  stage1-conf-vars += \
-	libc_cv_mips_tls=yes
-endif
-
-ifeq ($(arch),powerpc)
-  stage1-conf-vars += \
-	libc_cv_mlong_double_128ibm=yes \
-	libc_cv_mlong_double_128=yes \
-	libc_cv_powerpc32_tls=yes \
-	libc_cv_ppc_machine=yes \
-	libc_cv_ppc_rel16=yes
-endif
-
-ifeq ($(arch),sparc)
-  stage1-conf-vars += \
-	libc_cv_mlong_double_128=yes \
-	libc_cv_sparc_tls=yes \
-	libc_cv_z_relro=yes
-endif
-
 install-stage1: | $(pkgbuilddir)/stage1
 	cd $(pkgbuilddir)/stage1 && \
 		$(env) ../../configure $(stage1-conf-args) $(stage1-conf-vars)
