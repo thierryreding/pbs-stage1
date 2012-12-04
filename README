@@ -1,0 +1,29 @@
+Building toolchains
+===================
+
+To build a toolchain type:
+
+	$ make TARGET=<toolchain>
+
+The available toolchains are defined in the "targets" subdirectory.
+
+	$ ls -1 targets/
+	alpha-linux-gnu.mk
+	arm-unknown-linux-gnueabi.mk
+	arm-unknown-linux-uclibceabi.mk
+	i786-pc-linux-gnu.mk
+	ia64-linux-gnu.mk
+	m68k-linux-gnu.mk
+	mipsel-linux-gnu.mk
+	mips-linux-gnu.mk
+	powerpc-linux-gnu.mk
+	s390-linux-gnu.mk
+	sh4-linux-gnu.mk
+	sparc-linux-gnu.mk
+	x86_64-unknown-linux-gnu.mk
+
+By default, the created toolchain is installed into $HOME/pbs-stage1. To
+choose a different install directory you can override the "prefix" variable,
+for example to point to /opt or /usr/local.
+
+	$ make prefix=/usr/local TARGET=arm-unknown-linux-gnueabi
