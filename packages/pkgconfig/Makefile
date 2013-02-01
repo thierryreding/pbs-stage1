@@ -12,7 +12,8 @@ include packages/common.mk
 conf-args = \
 	--prefix=$(prefix) \
 	--infodir=$(prefix)/share/info \
-	--mandir=$(prefix)/share/man
+	--mandir=$(prefix)/share/man \
+	--with-internal-glib
 
 install: | $(pkgbuilddir)
 	cd $(pkgbuilddir) && ./configure $(conf-args)
