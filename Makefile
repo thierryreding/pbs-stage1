@@ -20,7 +20,11 @@ $(prefix)/meta/$(target)-binutils: | $(prefix)/meta
 	$(MAKE) -f packages/binutils/Makefile install
 	touch $@
 
-$(prefix)/meta/gmp: | $(prefix)/meta
+$(prefix)/meta/m4: | $(prefix)/meta
+	$(MAKE) -f packages/m4/Makefile install
+	touch $@
+
+$(prefix)/meta/gmp: | $(prefix)/meta/m4
 	$(MAKE) -f packages/gmp/Makefile install
 	touch $@
 
