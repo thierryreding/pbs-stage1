@@ -1,5 +1,5 @@
 package = linux
-version = 3.5.2
+version = 3.8.5
 
 major = $(word 1,$(subst ., ,$(version)))
 
@@ -22,11 +22,7 @@ ifeq ($(arch),sh4)
   arch = sh
 endif
 
-$(pkgsrcdir)/stamp-patched:
-	cd $(pkgsrcdir) && patch -p1 < $(srcdir)/patches/alpha.patch
-	touch $@
-
-$(pkgbuilddir): | $(pkgsrcdir) $(pkgsrcdir)/stamp-patched
+$(pkgbuilddir): | $(pkgsrcdir)
 	mkdir -p $@
 
 common-vars = \
