@@ -11,7 +11,7 @@ ifeq ($(libc),gnu)
   libc = glibc
 endif
 
-export arch cpu os libc target
+export arch cpu os libc abi fp target
 
 $(prefix)/meta $(builddir):
 	mkdir -p $@

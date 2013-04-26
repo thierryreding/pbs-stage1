@@ -33,6 +33,12 @@ stage1-conf-args = \
 	--disable-shared \
 	--disable-nls
 
+ifeq ($(fp),hard)
+  stage1-conf-args += --with-float=hard
+else
+  stage1-conf-args += --with-float=softfp
+endif
+
 ifeq ($(os),none)
   stage1-conf-args += --enable-multilib --with-newlib
 
@@ -80,6 +86,12 @@ stage2-conf-args = \
 	--enable-languages=c,c++,objc,obj-c++ \
 	--enable-threads=posix \
 	--disable-nls
+
+ifeq ($(fp),hard)
+  stage2-conf-args += --with-float=hard
+else
+  stage2-conf-args += --with-float=softfp
+endif
 
 ifeq ($(os),none)
   stage2-conf-args += --enable-multilib --with-newlib
