@@ -1,11 +1,12 @@
 package = gcc
-version = 4.7.2
+version = 4.8.0
 
 location = http://ftp.gnu.org/pub/gnu/$(package)/$(package)-$(version)
 tarballs = $(package)-$(version).tar.bz2
 
 pkgsrcdir = $(builddir)/$(package)-$(version)
 pkgbuilddir = $(pkgsrcdir)/target-$(target)
+srcdir = $(CURDIR)/packages/$(package)
 
 include packages/common.mk
 
@@ -37,6 +38,10 @@ ifeq ($(os),none)
 
   ifeq ($(arch),arm)
     stage1-conf-args += --enable-interwork
+  endif
+else
+  ifeq ($(arch),arm)
+    stage1-conf-args += --enable-multilib --enable-interwork
   endif
 endif
 
@@ -81,6 +86,10 @@ ifeq ($(os),none)
 
   ifeq ($(arch),arm)
     stage2-conf-args += --enable-interwork
+  endif
+else
+  ifeq ($(arch),arm)
+    stage2-conf-args += --enable-multilib --enable-interwork
   endif
 endif
 

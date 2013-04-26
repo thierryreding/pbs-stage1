@@ -36,15 +36,11 @@ $(prefix)/meta/mpc: $(prefix)/meta/gmp $(prefix)/meta/mpfr
 	$(MAKE) -f packages/mpc/Makefile install
 	touch $@
 
-$(prefix)/meta/ppl: $(prefix)/meta/gmp
-	$(MAKE) -f packages/ppl/Makefile install
-	touch $@
-
 $(prefix)/meta/$(target)-linux:
 	$(MAKE) -f packages/linux/Makefile install
 	touch $@
 
-$(prefix)/meta/$(target)-gcc-stage1: $(prefix)/meta/$(target)-binutils $(prefix)/meta/mpc $(prefix)/meta/ppl $(prefix)/meta/$(target)-linux
+$(prefix)/meta/$(target)-gcc-stage1: $(prefix)/meta/$(target)-binutils $(prefix)/meta/mpc $(prefix)/meta/$(target)-linux
 	$(MAKE) -f packages/gcc/Makefile install-stage1
 	touch $@
 
