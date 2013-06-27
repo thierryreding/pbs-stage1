@@ -10,7 +10,11 @@ srcdir = $(CURDIR)/packages/$(package)
 
 include packages/common.mk
 
-defconfig = $(srcdir)/configs/$(arch)_defconfig
+ifeq ($(arch),x86)
+  defconfig = $(srcdir)/configs/$(cpu)_defconfig
+else
+  defconfig = $(srcdir)/configs/$(arch)_defconfig
+endif
 
 common-vars = \
 	CROSS_COMPILE=$(target)- \
