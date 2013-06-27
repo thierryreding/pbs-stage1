@@ -37,6 +37,7 @@ stage1-conf-vars = \
 install-stage1: | $(pkgbuilddir)/stage1
 	cd $(pkgbuilddir)/stage1 && \
 		$(env) ../../configure $(stage1-conf-args) $(stage1-conf-vars)
+	touch $(sysroot-prefix)/include/gnu/stubs.h
 	cd $(pkgbuilddir)/stage1 && \
 		$(env) $(MAKE) $(install-vars) install-headers
 	touch $(sysroot-prefix)/include/gnu/stubs.h
