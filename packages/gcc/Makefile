@@ -33,10 +33,12 @@ stage1-conf-args = \
 	--disable-shared \
 	--disable-nls
 
-ifeq ($(fp),hard)
-  stage1-conf-args += --with-float=hard
-else
-  stage1-conf-args += --with-float=softfp
+ifeq ($(arch),arm)
+  ifeq ($(fp),hard)
+    stage1-conf-args += --with-float=hard
+  else
+    stage1-conf-args += --with-float=softfp
+  endif
 endif
 
 ifeq ($(os),none)
@@ -87,10 +89,12 @@ stage2-conf-args = \
 	--enable-threads=posix \
 	--disable-nls
 
-ifeq ($(fp),hard)
-  stage2-conf-args += --with-float=hard
-else
-  stage2-conf-args += --with-float=softfp
+ifeq ($(arch),arm)
+  ifeq ($(fp),hard)
+    stage2-conf-args += --with-float=hard
+  else
+    stage2-conf-args += --with-float=softfp
+  endif
 endif
 
 ifeq ($(os),none)
