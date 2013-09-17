@@ -114,6 +114,12 @@ $(prefix)/meta/automake:
 
 automake: $(prefix)/meta/automake
 
-targets = gcc gdb libtool pkgconfig ccache autoconf automake
+$(prefix)/meta/quilt:
+	$(MAKE) -f packages/quilt/Makefile install
+	touch $@
+
+quilt: $(prefix)/meta/quilt
+
+targets = gcc gdb libtool pkgconfig ccache autoconf automake quilt
 
 all: $(targets)
