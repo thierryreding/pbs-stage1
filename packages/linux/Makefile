@@ -12,14 +12,18 @@ srcdir = $(CURDIR)/packages/$(package)
 
 include packages/common.mk
 
-ifeq ($(arch),powerpc)
-  defconfig = ppc64_defconfig
-else
-  defconfig = defconfig
+ifeq ($(arch),powerpc64)
+  arch = powerpc
 endif
 
 ifeq ($(arch),sh4)
   arch = sh
+endif
+
+ifeq ($(arch),powerpc)
+  defconfig = ppc64_defconfig
+else
+  defconfig = defconfig
 endif
 
 $(pkgbuilddir): | $(pkgsrcdir)
