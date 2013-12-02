@@ -75,12 +75,42 @@ $(pkgbuilddir)/stage2/configparms:
 	echo "build-programs = no" > $@
 endif
 
-install: | $(pkgbuilddir)/stage2
+#
+# HACK: build a 32-bit variant of the GNU C library for biarch support
+#
+ifeq ($(arch),powerpc64)
+$(pkgbuilddir)/stage2/32 $(pkgbuilddir)/stage2/64: | $(pkgbuilddir)/stage2
+	mkdir -p $@
+
+target-32 = $(subst powerpc64,powerpc,$(target))
+stage2-32-conf-args = $(subst --host=$(target),--host=$(target-32),$(stage2-conf-args))
+stage2-32-conf-vars = $(stage2-conf-vars) CC='$(target)-gcc -m32'
+
+install-32: $(pkgsrcdir)/stamp-patched | $(pkgbuilddir)/stage2/32
+	cd $(pkgbuilddir)/stage2/32 && \
+		$(env) ../../../configure $(stage2-32-conf-args) $(stage2-32-conf-vars)
+	cd $(pkgbuilddir)/stage2/32 && \
+		$(env) $(MAKE) -j $(num-jobs)
+	cd $(pkgbuilddir)/stage2/32 && \
+		$(env) $(MAKE) $(install-vars) install
+
+install-64: $(pkgsrcdir)/stamp-patched | $(pkgbuilddir)/stage2/64
+	cd $(pkgbuilddir)/stage2/64 && \
+		$(env) ../../../configure $(stage2-conf-args) $(stage2-conf-vars)
+	cd $(pkgbuilddir)/stage2/64 && \
+		$(env) $(MAKE) -j $(num-jobs)
+	cd $(pkgbuilddir)/stage2/64 && \
+		$(env) $(MAKE) $(install-vars) install
+
+install: install-32 install-64
+else
+install: $(pkgsrcdir)/stamp-patched | $(pkgbuilddir)/stage2
 	cd $(pkgbuilddir)/stage2 && \
 		$(env) ../../configure $(stage2-conf-args) $(stage2-conf-vars)
 	cd $(pkgbuilddir)/stage2 && \
 		$(env) $(MAKE) -j $(num-jobs)
 	cd $(pkgbuilddir)/stage2 && \
 		$(env) $(MAKE) $(install-vars) install
+endif
 
 .PHONY: install-stage1 install

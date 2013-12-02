@@ -41,10 +41,6 @@ ifeq ($(arch),arm)
   endif
 endif
 
-ifeq ($(arch),powerpc64)
-  stage1-conf-args += --disable-multilib
-endif
-
 ifeq ($(os),none)
   stage1-conf-args += --enable-multilib --with-newlib --disable-threads --disable-libssp
 
@@ -103,10 +99,6 @@ ifeq ($(arch),arm)
   else
     stage2-conf-args += --with-float=softfp
   endif
-endif
-
-ifeq ($(arch),powerpc64)
-  stage2-conf-args += --disable-multilib
 endif
 
 ifeq ($(os),none)
