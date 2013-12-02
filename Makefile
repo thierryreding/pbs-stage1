@@ -40,7 +40,11 @@ $(prefix)/meta/$(target)-linux:
 	$(MAKE) -f packages/linux/Makefile install
 	touch $@
 
-$(prefix)/meta/$(target)-gcc-stage1: $(prefix)/meta/$(target)-binutils $(prefix)/meta/mpc $(prefix)/meta/$(target)-linux
+$(prefix)/meta/$(target)-gcc-stage1: $(prefix)/meta/$(target)-binutils
+ifeq ($(os),linux)
+$(prefix)/meta/$(target)-gcc-stage1: $(prefix)/meta/$(target)-linux
+endif
+$(prefix)/meta/$(target)-gcc-stage1: $(prefix)/meta/mpc
 	$(MAKE) -f packages/gcc/Makefile install-stage1
 	touch $@
 
@@ -72,7 +76,9 @@ $(prefix)/meta/$(target)-newlib: $(prefix)/meta/$(target)-gcc-stage1-libgcc
 	$(MAKE) -f packages/newlib/Makefile install
 	touch $@
 
+$(prefix)/meta/$(target)-gcc: $(prefix)/meta/$(target)-binutils
 $(prefix)/meta/$(target)-gcc: $(prefix)/meta/$(target)-$(libc)
+$(prefix)/meta/$(target)-gcc: $(prefix)/meta/mpc
 	$(MAKE) -f packages/gcc/Makefile install
 	touch $@
 

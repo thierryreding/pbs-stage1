@@ -19,8 +19,8 @@ stage1-conf-args = \
 	--datadir=$(exec-prefix)/share \
 	--infodir=$(exec-prefix)/share/info \
 	--mandir=$(exec-prefix)/share/man \
-	--libdir=$(sysroot-prefix)/lib \
-	--libexecdir=$(sysroot-prefix)/lib \
+	--libdir=$(exec-prefix)/lib \
+	--libexecdir=$(exec-prefix)/lib \
 	--includedir=$(sysroot-prefix)/include \
 	--with-pkgversion="PBS $(release)" \
 	--program-prefix=$(target)- \
@@ -46,10 +46,14 @@ ifeq ($(arch),powerpc64)
 endif
 
 ifeq ($(os),none)
-  stage1-conf-args += --enable-multilib --with-newlib
+  stage1-conf-args += --enable-multilib --with-newlib --disable-threads --disable-libssp
 
   ifeq ($(arch),arm)
     stage1-conf-args += --enable-interwork
+  endif
+
+  ifeq ($(arch),powerpc)
+    stage1-conf-args += --enable-targets=all
   endif
 else
   ifeq ($(arch),arm)
@@ -106,10 +110,14 @@ ifeq ($(arch),powerpc64)
 endif
 
 ifeq ($(os),none)
-  stage2-conf-args += --enable-multilib --with-newlib
+  stage2-conf-args += --enable-multilib --with-newlib --disable-threads --disable-libssp
 
   ifeq ($(arch),arm)
     stage2-conf-args += --enable-interwork
+  endif
+
+  ifeq ($(arch),powerpc)
+    stage2-conf-args += --enable-targets=all
   endif
 else
   ifeq ($(arch),arm)
@@ -128,4 +136,4 @@ install: | $(pkgbuilddir)/stage2
 	mv $(prefix)/bin/$(target)-g++ $(prefix)/bin/$(target)-g++-$(version) && ln -s $(target)-gcc $(prefix)/bin/$(target)-g++
 	mv $(prefix)/bin/$(target)-c++ $(prefix)/bin/$(target)-c++-$(version) && ln -s $(target)-gcc $(prefix)/bin/$(target)-c++
 
-.PHONY: install-stage1 install-stage1-libgcc
+.PHONY: install-stage1 install-stage1-libgcc install
