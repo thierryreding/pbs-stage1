@@ -12,6 +12,10 @@ srcdir = $(CURDIR)/packages/$(package)
 
 include packages/common.mk
 
+ifeq ($(arch),aarch64)
+  arch = arm64
+endif
+
 ifeq ($(arch),powerpc64)
   arch = powerpc
 endif

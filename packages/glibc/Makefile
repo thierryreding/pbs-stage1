@@ -75,6 +75,15 @@ $(pkgbuilddir)/stage2/configparms:
 	echo "build-programs = no" > $@
 endif
 
+ifeq ($(arch),aarch64)
+install: $(pkgbuilddir)/stage2/configparms
+
+$(pkgbuilddir)/stage2/configparms:
+	echo "slibdir=/usr/lib" > $@
+	echo "sbindir=/usr/bin" >> $@
+	echo "rootsbindir=/usr/bin" >> $@
+endif
+
 #
 # HACK: build a 32-bit variant of the GNU C library for biarch support
 #
