@@ -40,10 +40,21 @@ stage1-conf-args = \
 stage1-conf-vars = \
 	libc_cv_forced_unwind=yes
 
-install-stage1: | $(pkgbuilddir)/stage1
+#
+# TODO: Fix this for x86_64. It fails during install-headers with this:
+#
+#     In file included from /home/thierry.reding/pbs-stage1/x86_64-unknown-linux-gnu/sys-root/usr/include/errno.h:28:0,
+#                      from rpc_main.c:37:
+#     /home/thierry.reding/pbs-stage1/x86_64-unknown-linux-gnu/sys-root/usr/include/features.h:399:23: fatal error: gnu/stubs.h: No such file or directory
+#      #include <gnu/stubs.h>
+#                            ^
+#     compilation terminated.
+#
+install-stage1: $(pkgsrcdir)/stamp-patched | $(pkgbuilddir)/stage1
 	cd $(pkgbuilddir)/stage1 && \
 		$(env) ../../configure $(stage1-conf-args) $(stage1-conf-vars)
-	touch $(sysroot-prefix)/include/gnu/stubs.h
+	#mkdir -p $(sysroot-prefix)/include/gnu && \
+	#	touch $(sysroot-prefix)/include/gnu/stubs.h
 	cd $(pkgbuilddir)/stage1 && \
 		$(env) $(MAKE) $(install-vars) install-headers
 	touch $(sysroot-prefix)/include/gnu/stubs.h
