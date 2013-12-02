@@ -1,9 +1,9 @@
 package = linux
-version = 3.8.5
+version = 3.12
 
 major = $(word 1,$(subst ., ,$(version)))
 
-location = http://www.kernel.org/pub/linux/kernel/v$(major).x
+location = https://www.kernel.org/pub/linux/kernel/v$(major).x
 tarballs = $(package)-$(version).tar.xz
 
 pkgsrcdir = $(builddir)/$(package)-$(version)
