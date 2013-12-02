@@ -1,5 +1,5 @@
 package = glibc
-version = 2.17
+version = 2.18
 
 location = http://ftp.gnu.org/pub/gnu/$(package)
 tarballs = $(package)-$(version).tar.xz
@@ -15,6 +15,12 @@ $(pkgbuilddir): | $(pkgsrcdir)
 
 $(pkgbuilddir)/stage1 $(pkgbuilddir)/stage2: | $(pkgbuilddir)
 	mkdir -p $@
+
+$(pkgsrcdir)/stamp-patched: | $(pkgsrcdir)
+	cd $(pkgsrcdir) && \
+		patch -p1 < $(srcdir)/patches/install-root.patch && \
+		patch -p1 < $(srcdir)/patches/make-4.patch
+	touch $@
 
 install-vars = \
 	install_root=$(sysroot) \

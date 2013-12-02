@@ -1,0 +1,27 @@
+diff --git a/Makefile b/Makefile
+index 6c1e392..5c7396c 100644
+--- a/Makefile
++++ b/Makefile
+@@ -238,7 +238,8 @@ $(all-subdirs-targets):
+ define subdir-target-args
+ subdir=$(@D)$(if $($(@D)-srcdir),\
+ -C $($(@D)-srcdir) ..=`pwd`/,\
+--C $(@D) ..=../)
++-C $(@D) ..=../) \
++install_root="$(install_root)"
+ endef
+ 
+ .PHONY: $(+subdir_targets) $(all-subdirs-targets)
+diff --git a/Makefile.in b/Makefile.in
+index d73a78f..bb43ed2 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -6,7 +6,7 @@ srcdir = @srcdir@
+ .PHONY: all install bench
+ 
+ all .DEFAULT:
+-	$(MAKE) -r PARALLELMFLAGS="$(PARALLELMFLAGS)" -C $(srcdir) objdir=`pwd` $@
++	$(MAKE) -r PARALLELMFLAGS="$(PARALLELMFLAGS)" -C $(srcdir) install_root="$(install_root)" objdir=`pwd` $@
+ 
+ install:
+ 	LANGUAGE=C LC_ALL=C; export LANGUAGE LC_ALL; \
