@@ -29,4 +29,7 @@ install: | $(pkgbuilddir)
 	cd $(pkgbuilddir) && $(MAKE) -j $(num-jobs)
 	cd $(pkgbuilddir) && $(MAKE) install
 
-.PHONY: install
+clean:
+	rm -rf $(pkgbuilddir)
+
+.PHONY: install clean

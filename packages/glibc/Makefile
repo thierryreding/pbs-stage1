@@ -133,4 +133,7 @@ install: $(pkgsrcdir)/stamp-patched | $(pkgbuilddir)/stage2
 		$(env) $(MAKE) $(install-vars) install
 endif
 
-.PHONY: install-stage1 install
+clean:
+	rm -rf $(pkgbuilddir)
+
+.PHONY: install-stage1 install clean

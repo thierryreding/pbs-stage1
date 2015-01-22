@@ -139,3 +139,14 @@ quilt: $(prefix)/meta/quilt
 targets = gcc gdb libtool pkgconfig ccache autoconf automake quilt
 
 all: $(targets)
+
+uninstall:
+	rm -rf $(prefix)/lib/gcc/$(target)
+	rm -rf $(prefix)/bin/$(target)-*
+	rm -rf $(prefix)/$(target)
+	rm -rf $(prefix)/meta/$(target)-*
+
+clean-%:
+	$(MAKE) -f packages/$*/Makefile clean
+
+clean: clean-gdb clean-$(libc) clean-gcc clean-linux clean-binutils

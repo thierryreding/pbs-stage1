@@ -45,4 +45,7 @@ install: | $(pkgbuilddir)
 	cd $(pkgsrcdir) && $(MAKE) $(common-vars) $(defconfig)
 	cd $(pkgsrcdir) && $(MAKE) $(install-vars) headers_install
 
-.PHONY: install
+clean:
+	rm -rf $(pkgbuilddir)
+
+.PHONY: install clean

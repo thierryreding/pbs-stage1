@@ -128,4 +128,7 @@ install: | $(pkgbuilddir)/stage2
 	mv $(prefix)/bin/$(target)-g++ $(prefix)/bin/$(target)-g++-$(version) && ln -s $(target)-gcc $(prefix)/bin/$(target)-g++
 	mv $(prefix)/bin/$(target)-c++ $(prefix)/bin/$(target)-c++-$(version) && ln -s $(target)-gcc $(prefix)/bin/$(target)-c++
 
-.PHONY: install-stage1 install-stage1-libgcc install
+clean:
+	rm -rf $(pkgbuilddir)
+
+.PHONY: install-stage1 install-stage1-libgcc install clean
