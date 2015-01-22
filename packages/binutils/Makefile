@@ -1,5 +1,5 @@
 package = binutils
-version = 2.23.2
+version = 2.25
 
 location = http://ftp.gnu.org/gnu/$(package)
 tarballs = $(package)-$(version).tar.bz2
@@ -10,10 +10,6 @@ srcdir = $(CURDIR)/packages/$(package)
 
 include packages/common.mk
 
-$(pkgsrcdir)/stamp-patched: | $(pkgsrcdir)
-	cd $(pkgsrcdir) && patch -p1 < $(srcdir)/patches/texinfo-5.0.patch
-	touch $@
-
 conf-args = \
 	--target=$(host) \
 	--prefix=$(prefix) \
@@ -23,12 +19,14 @@ conf-args = \
 	--libdir=$(exec-prefix)/lib \
 	--with-pkgversion="PBS $(release)" \
 	--with-sysroot=$(sysroot) \
+	--enable-ld=default \
+	--enable-gold \
 	--disable-nls
 
 $(pkgbuilddir): | $(pkgsrcdir)
 	mkdir -p $@
 
-install: $(pkgsrcdir)/stamp-patched | $(pkgbuilddir)
+install: | $(pkgbuilddir)
 	cd $(pkgbuilddir) && ../configure $(conf-args)
 	cd $(pkgbuilddir) && $(MAKE) -j $(num-jobs)
 	cd $(pkgbuilddir) && $(MAKE) install
