@@ -1,5 +1,5 @@
 package = quilt
-version = 0.60
+version = 0.64
 
 location = http://download.savannah.gnu.org/releases/$(package)
 tarballs = $(package)-$(version).tar.gz
