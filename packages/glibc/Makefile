@@ -1,5 +1,5 @@
 package = glibc
-version = 2.18
+version = 2.21
 
 location = http://ftp.gnu.org/pub/gnu/$(package)
 tarballs = $(package)-$(version).tar.xz
@@ -15,12 +15,6 @@ $(pkgbuilddir): | $(pkgsrcdir)
 
 $(pkgbuilddir)/stage1 $(pkgbuilddir)/stage2: | $(pkgbuilddir)
 	mkdir -p $@
-
-$(pkgsrcdir)/stamp-patched: | $(pkgsrcdir)
-	cd $(pkgsrcdir) && \
-		patch -p1 < $(srcdir)/patches/install-root.patch && \
-		patch -p1 < $(srcdir)/patches/make-4.patch
-	touch $@
 
 install-vars = \
 	install_root=$(sysroot) \
@@ -50,7 +44,7 @@ stage1-conf-vars = \
 #                            ^
 #     compilation terminated.
 #
-install-stage1: $(pkgsrcdir)/stamp-patched | $(pkgbuilddir)/stage1
+install-stage1: | $(pkgbuilddir)/stage1
 	cd $(pkgbuilddir)/stage1 && \
 		../../configure $(stage1-conf-args) $(stage1-conf-vars)
 	#mkdir -p $(sysroot-prefix)/include/gnu && \
@@ -106,7 +100,7 @@ target-32 = $(subst powerpc64,powerpc,$(target))
 stage2-32-conf-args = $(subst --host=$(target),--host=$(target-32),$(stage2-conf-args))
 stage2-32-conf-vars = $(stage2-conf-vars) CC='$(target)-gcc -m32'
 
-install-32: $(pkgsrcdir)/stamp-patched | $(pkgbuilddir)/stage2/32
+install-32: | $(pkgbuilddir)/stage2/32
 	cd $(pkgbuilddir)/stage2/32 && \
 		../../../configure $(stage2-32-conf-args) $(stage2-32-conf-vars)
 	cd $(pkgbuilddir)/stage2/32 && \
@@ -114,7 +108,7 @@ install-32: $(pkgsrcdir)/stamp-patched | $(pkgbuilddir)/stage2/32
 	cd $(pkgbuilddir)/stage2/32 && \
 		$(MAKE) $(install-vars) install
 
-install-64: $(pkgsrcdir)/stamp-patched | $(pkgbuilddir)/stage2/64
+install-64: | $(pkgbuilddir)/stage2/64
 	cd $(pkgbuilddir)/stage2/64 && \
 		../../../configure $(stage2-conf-args) $(stage2-conf-vars)
 	cd $(pkgbuilddir)/stage2/64 && \
@@ -124,7 +118,7 @@ install-64: $(pkgsrcdir)/stamp-patched | $(pkgbuilddir)/stage2/64
 
 install: install-32 install-64
 else
-install: $(pkgsrcdir)/stamp-patched | $(pkgbuilddir)/stage2
+install: | $(pkgbuilddir)/stage2
 	cd $(pkgbuilddir)/stage2 && \
 		../../configure $(stage2-conf-args) $(stage2-conf-vars)
 	cd $(pkgbuilddir)/stage2 && \
