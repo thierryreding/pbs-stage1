@@ -8,6 +8,8 @@ pkgsrcdir = $(builddir)/$(package)-$(version)
 pkgbuilddir = $(pkgsrcdir)/target-$(target)
 srcdir = $(CURDIR)/packages/$(package)
 
+includedir = $(prefix)/lib/gcc/$(target)/$(version)/include
+
 include packages/common.mk
 
 $(pkgbuilddir)/stage1: | $(pkgsrcdir)
@@ -19,9 +21,8 @@ stage1-conf-args = \
 	--datadir=$(exec-prefix)/share \
 	--infodir=$(exec-prefix)/share/info \
 	--mandir=$(exec-prefix)/share/man \
-	--libdir=$(exec-prefix)/lib \
-	--libexecdir=$(exec-prefix)/lib \
-	--includedir=$(sysroot-prefix)/include \
+	--libexecdir=$(prefix)/lib \
+	--includedir=$(includedir) \
 	--with-pkgversion="PBS $(release)" \
 	--program-prefix=$(target)- \
 	--with-sysroot=$(sysroot) \
@@ -78,10 +79,9 @@ stage2-conf-args = \
 	--datadir=$(exec-prefix)/share \
 	--infodir=$(exec-prefix)/share/info \
 	--mandir=$(exec-prefix)/share/man \
-	--libdir=$(exec-prefix)/lib \
-	--libexecdir=$(exec-prefix)/lib \
-	--includedir=$(sysroot-prefix)/include \
-	--with-gxx-include-dir=$(sysroot-prefix)/include/c++/$(version) \
+	--libexecdir=$(prefix)/lib \
+	--includedir=$(includedir) \
+	--with-gxx-include-dir=$(includedir)/c++ \
 	--with-pkg-version="PBS $(release)" \
 	--program-prefix=$(target)- \
 	--with-sysroot=$(sysroot) \
