@@ -1,8 +1,8 @@
 package = gdb
-version = 7.6.1
+version = 7.9
 
 location = http://ftp.gnu.org/gnu/$(package)
-tarballs = $(package)-$(version).tar.bz2
+tarballs = $(package)-$(version).tar.xz
 
 pkgsrcdir = $(builddir)/$(package)-$(version)
 pkgbuilddir = $(pkgsrcdir)/target-$(target)
