@@ -1,0 +1,26 @@
+diff --git a/build-aux/ltmain.in b/build-aux/ltmain.in
+index a72c007cbf58..d29e3c86335a 100644
+--- a/build-aux/ltmain.in
++++ b/build-aux/ltmain.in
+@@ -6421,7 +6421,7 @@ func_mode_link ()
+ 	      fi
+ 	    else
+ 	      # We cannot seem to hardcode it, guess we'll fake it.
+-	      add_dir=-L$libdir
++	      add_dir=-L$lt_sysroot$libdir
+ 	      # Try looking first in the location we're being installed to.
+ 	      if test -n "$inst_prefix_dir"; then
+ 		case $libdir in
+diff --git a/build-aux/ltmain.sh b/build-aux/ltmain.sh
+index 5eca4aeaae90..fdffdbe07fed 100644
+--- a/build-aux/ltmain.sh
++++ b/build-aux/ltmain.sh
+@@ -8333,7 +8333,7 @@ func_mode_link ()
+ 	      fi
+ 	    else
+ 	      # We cannot seem to hardcode it, guess we'll fake it.
+-	      add_dir=-L$libdir
++	      add_dir=-L$lt_sysroot$libdir
+ 	      # Try looking first in the location we're being installed to.
+ 	      if test -n "$inst_prefix_dir"; then
+ 		case $libdir in
