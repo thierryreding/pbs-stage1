@@ -27,9 +27,9 @@ common-vars = \
 	PREFIX=$(sysroot)
 
 $(pkgsrcdir)/.patch: | $(pkgsrcdir)
-	cd $(pkgsrcdir) && patch -p1 < $(srcdir)/patches/config-path-len.patch
-	cd $(pkgsrcdir) && patch -p1 < $(srcdir)/patches/linux-types.patch
-	cd $(pkgsrcdir) && patch -p1 < $(srcdir)/patches/out-of-tree.patch
+	cd $(pkgsrcdir) && \
+		patch -p1 < $(srcdir)/patches/latest.patch && \
+		patch -p1 < $(srcdir)/patches/out-of-tree.patch
 	touch $@
 
 $(pkgbuilddir)/stage1 $(pkgbuilddir)/stage2: $(pkgsrcdir)/.patch
