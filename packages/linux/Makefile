@@ -1,5 +1,5 @@
 package = linux
-version = 3.12
+version = 4.0.2
 
 major = $(word 1,$(subst ., ,$(version)))
 
@@ -14,6 +14,10 @@ include packages/common.mk
 
 ifeq ($(arch),aarch64)
   arch = arm64
+endif
+
+ifeq ($(arch),bfin)
+  arch = blackfin
 endif
 
 ifeq ($(arch),powerpc64)
