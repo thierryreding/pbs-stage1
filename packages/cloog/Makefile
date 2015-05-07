@@ -1,5 +1,5 @@
 package = cloog
-version = 0.18.1
+version = 0.18.3
 
 location = http://www.bastoul.net/cloog/pages/download
 tarballs = $(package)-$(version).tar.gz
@@ -17,12 +17,7 @@ conf-args = \
 	--with-isl=system \
 	--with-isl-prefix=$(prefix)
 
-$(pkgsrcdir)/stamp-patched: | $(pkgsrcdir)
-	cd $(pkgsrcdir) && \
-		patch -p1 < $(srcdir)/patches/isl-compat.patch
-	touch $@
-
-install: $(pkgsrcdir)/stamp-patched | $(pkgbuilddir)
+install: | $(pkgbuilddir)
 	cd $(pkgbuilddir) && ./configure $(conf-args)
 	cd $(pkgbuilddir) && $(MAKE) -j $(num-jobs)
 	cd $(pkgbuilddir) && $(MAKE) install
