@@ -1,5 +1,5 @@
 package = mpc
-version = 1.0.1
+version = 1.0.3
 
 location = http://www.multiprecision.org/$(package)/download
 tarballs = $(package)-$(version).tar.gz
