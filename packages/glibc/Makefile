@@ -20,8 +20,6 @@ install-vars = \
 	install_root=$(sysroot) \
 	prefix=/usr
 
-# XXX Remove --enable-obsolete-rpc once GCC 5 was fixed to properly check for
-# the existence of the headers that this exposes.
 stage1-conf-args = \
 	--build=$(build) \
 	--host=$(host) \
@@ -31,7 +29,6 @@ stage1-conf-args = \
 	--mandir=/usr/share/man \
 	--program-prefix=$(target)- \
 	--with-headers=$(sysroot-prefix)/include \
-	--enable-obsolete-rpc \
 	--enable-addons=ports
 
 stage1-conf-vars = \
@@ -56,8 +53,6 @@ install-stage1: | $(pkgbuilddir)/stage1
 		$(MAKE) $(install-vars) install-headers
 	touch $(sysroot-prefix)/include/gnu/stubs.h
 
-# XXX Remove --enable-obsolete-rpc once GCC 5 was fixed to properly check for
-# the existence of the headers that this exposes.
 stage2-conf-args = \
 	--build=$(build) \
 	--host=$(host) \
@@ -67,7 +62,6 @@ stage2-conf-args = \
 	--mandir=/usr/share/man \
 	--program-prefix=$(target)- \
 	--with-headers=$(sysroot-prefix)/include \
-	--enable-obsolete-rpc \
 	--enable-addons=ports
 
 stage2-conf-vars = \
