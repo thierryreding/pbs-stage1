@@ -9,7 +9,7 @@ exec-prefix = $(prefix)/$(target)
 sysroot = $(prefix)/$(target)/sys-root
 sysroot-prefix = $(sysroot)/usr
 
-num-jobs = 8
+num-jobs = 12
 
 build = $(shell support/config.guess)
 host = $(target)
