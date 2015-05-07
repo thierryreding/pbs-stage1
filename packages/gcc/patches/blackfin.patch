@@ -1,0 +1,13 @@
+diff --git a/gcc/config.gcc b/gcc/config.gcc
+index 3c55c88af4d3..e205fb9ca5ee 100644
+--- a/gcc/config.gcc
++++ b/gcc/config.gcc
+@@ -1101,7 +1101,7 @@ bfin*-uclinux*)
+ 	;;
+ bfin*-linux-uclibc*)
+ 	tm_file="${tm_file} dbxelf.h elfos.h bfin/elf.h gnu-user.h linux.h glibc-stdint.h bfin/linux.h ./linux-sysroot-suffix.h"
+-	tmake_file="bfin/t-bfin-linux t-slibgcc t-linux"
++	tmake_file="${tmake_file} bfin/t-bfin-linux t-slibgcc t-linux"
+ 	use_collect2=no
+ 	;;
+ bfin*-rtems*)

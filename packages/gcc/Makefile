@@ -1,5 +1,5 @@
 package = gcc
-version = 4.8.2
+version = 4.9.2
 
 location = http://ftp.gnu.org/pub/gnu/$(package)/$(package)-$(version)
 tarballs = $(package)-$(version).tar.bz2
@@ -15,6 +15,10 @@ include packages/common.mk
 $(pkgbuilddir)/stage1: | $(pkgsrcdir)
 	mkdir -p $@
 
+$(pkgsrcdir)/stamp-patched: | $(pkgsrcdir)
+	cd $(pkgsrcdir) && patch -p1 < $(srcdir)/patches/blackfin.patch
+	touch $@
+
 stage1-conf-args = \
 	--target=$(host) \
 	--prefix=$(prefix) \
@@ -29,8 +33,9 @@ stage1-conf-args = \
 	--with-mpfr=$(prefix) \
 	--with-gmp=$(prefix) \
 	--with-ppl=$(prefix) \
+	--with-cloog=$(prefix) \
+	--enable-cloog-backend=isl \
 	--enable-languages=c \
-	--enable-threads=posix \
 	--disable-shared \
 	--disable-nls
 
@@ -40,6 +45,16 @@ ifeq ($(arch),arm)
   else
     stage1-conf-args += --with-float=softfp
   endif
+endif
+
+ifeq ($(arch),bfin)
+  stage1-conf-args += --disable-threads
+else
+  stage1-conf-args += --enable-threads=posix
+endif
+
+ifeq ($(arch),score)
+  stage1-conf-args += --enable-obsolete
 endif
 
 ifeq ($(os),none)
@@ -58,7 +73,7 @@ else
   endif
 endif
 
-install-stage1: | $(pkgbuilddir)/stage1
+install-stage1: $(pkgsrcdir)/stamp-patched | $(pkgbuilddir)/stage1
 	cd $(pkgbuilddir)/stage1 && ../../configure $(stage1-conf-args)
 	cd $(pkgbuilddir)/stage1 && $(MAKE) -j $(num-jobs) all-gcc
 	cd $(pkgbuilddir)/stage1 && $(MAKE) install-gcc
@@ -88,9 +103,9 @@ stage2-conf-args = \
 	--with-mpfr=$(prefix) \
 	--with-gmp=$(prefix) \
 	--with-ppl=$(prefix) \
-	--disable-ppl-version-check \
+	--with-cloog=$(prefix) \
+	--enable-cloog-backend=isl \
 	--enable-languages=c,c++,objc,obj-c++ \
-	--enable-threads=posix \
 	--disable-nls
 
 ifeq ($(arch),arm)
@@ -99,6 +114,16 @@ ifeq ($(arch),arm)
   else
     stage2-conf-args += --with-float=softfp
   endif
+endif
+
+ifeq ($(arch),bfin)
+  stage2-conf-args += --disable-threads
+else
+  stage2-conf-args += --enable-threads=posix
+endif
+
+ifeq ($(arch),score)
+  stage1-conf-args += --enable-obsolete
 endif
 
 ifeq ($(os),none)
@@ -117,7 +142,7 @@ else
   endif
 endif
 
-install: | $(pkgbuilddir)/stage2
+install: $(pkgsrcdir)/stamp-patched | $(pkgbuilddir)/stage2
 	cd $(pkgbuilddir)/stage2 && ../../configure $(stage2-conf-args)
 	cd $(pkgbuilddir)/stage2 && $(MAKE) -j $(num-jobs)
 	cd $(pkgbuilddir)/stage2 && $(MAKE) install
