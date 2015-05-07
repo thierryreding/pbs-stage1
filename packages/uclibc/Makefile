@@ -43,8 +43,8 @@ stage1-vars = \
 	$(common-vars)
 
 install-stage1: $(pkgbuilddir)/stage1/.config
-	cd $(pkgsrcdir) && $(env) $(MAKE) $(stage1-vars) oldconfig
-	cd $(pkgsrcdir) && $(env) $(MAKE) $(stage1-vars) install_headers
+	cd $(pkgsrcdir) && $(MAKE) $(stage1-vars) oldconfig
+	cd $(pkgsrcdir) && $(MAKE) $(stage1-vars) install_headers
 
 $(pkgbuilddir)/stage2/.config: $(defconfig) | $(pkgbuilddir)/stage2
 	cat $(defconfig) > $@
@@ -55,10 +55,10 @@ stage2-vars = \
 
 install: $(pkgbuilddir)/stage2/.config
 	cd $(pkgsrcdir) && \
-		$(env) $(MAKE) $(stage2-vars) oldconfig
+		$(MAKE) $(stage2-vars) oldconfig
 	cd $(pkgsrcdir) && \
-		$(env) $(MAKE) -j $(num-jobs) $(stage2-vars)
+		$(MAKE) -j $(num-jobs) $(stage2-vars)
 	cd $(pkgsrcdir) && \
-		$(env) $(MAKE) -j $(num-jobs) $(stage2-vars) install
+		$(MAKE) -j $(num-jobs) $(stage2-vars) install
 
 .PHONY: install-stage1 install

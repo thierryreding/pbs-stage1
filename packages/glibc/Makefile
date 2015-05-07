@@ -52,11 +52,11 @@ stage1-conf-vars = \
 #
 install-stage1: $(pkgsrcdir)/stamp-patched | $(pkgbuilddir)/stage1
 	cd $(pkgbuilddir)/stage1 && \
-		$(env) ../../configure $(stage1-conf-args) $(stage1-conf-vars)
+		../../configure $(stage1-conf-args) $(stage1-conf-vars)
 	#mkdir -p $(sysroot-prefix)/include/gnu && \
 	#	touch $(sysroot-prefix)/include/gnu/stubs.h
 	cd $(pkgbuilddir)/stage1 && \
-		$(env) $(MAKE) $(install-vars) install-headers
+		$(MAKE) $(install-vars) install-headers
 	touch $(sysroot-prefix)/include/gnu/stubs.h
 
 stage2-conf-args = \
@@ -108,29 +108,29 @@ stage2-32-conf-vars = $(stage2-conf-vars) CC='$(target)-gcc -m32'
 
 install-32: $(pkgsrcdir)/stamp-patched | $(pkgbuilddir)/stage2/32
 	cd $(pkgbuilddir)/stage2/32 && \
-		$(env) ../../../configure $(stage2-32-conf-args) $(stage2-32-conf-vars)
+		../../../configure $(stage2-32-conf-args) $(stage2-32-conf-vars)
 	cd $(pkgbuilddir)/stage2/32 && \
-		$(env) $(MAKE) -j $(num-jobs)
+		$(MAKE) -j $(num-jobs)
 	cd $(pkgbuilddir)/stage2/32 && \
-		$(env) $(MAKE) $(install-vars) install
+		$(MAKE) $(install-vars) install
 
 install-64: $(pkgsrcdir)/stamp-patched | $(pkgbuilddir)/stage2/64
 	cd $(pkgbuilddir)/stage2/64 && \
-		$(env) ../../../configure $(stage2-conf-args) $(stage2-conf-vars)
+		../../../configure $(stage2-conf-args) $(stage2-conf-vars)
 	cd $(pkgbuilddir)/stage2/64 && \
-		$(env) $(MAKE) -j $(num-jobs)
+		$(MAKE) -j $(num-jobs)
 	cd $(pkgbuilddir)/stage2/64 && \
-		$(env) $(MAKE) $(install-vars) install
+		$(MAKE) $(install-vars) install
 
 install: install-32 install-64
 else
 install: $(pkgsrcdir)/stamp-patched | $(pkgbuilddir)/stage2
 	cd $(pkgbuilddir)/stage2 && \
-		$(env) ../../configure $(stage2-conf-args) $(stage2-conf-vars)
+		../../configure $(stage2-conf-args) $(stage2-conf-vars)
 	cd $(pkgbuilddir)/stage2 && \
-		$(env) $(MAKE) -j $(num-jobs)
+		$(MAKE) -j $(num-jobs)
 	cd $(pkgbuilddir)/stage2 && \
-		$(env) $(MAKE) $(install-vars) install
+		$(MAKE) $(install-vars) install
 endif
 
 clean:

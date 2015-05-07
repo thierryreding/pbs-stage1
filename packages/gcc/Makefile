@@ -58,16 +58,16 @@ else
 endif
 
 install-stage1: | $(pkgbuilddir)/stage1
-	cd $(pkgbuilddir)/stage1 && $(env) ../../configure $(stage1-conf-args)
-	cd $(pkgbuilddir)/stage1 && $(env) $(MAKE) -j $(num-jobs) all-gcc
-	cd $(pkgbuilddir)/stage1 && $(env) $(MAKE) install-gcc
+	cd $(pkgbuilddir)/stage1 && ../../configure $(stage1-conf-args)
+	cd $(pkgbuilddir)/stage1 && $(MAKE) -j $(num-jobs) all-gcc
+	cd $(pkgbuilddir)/stage1 && $(MAKE) install-gcc
 	rm $(prefix)/bin/$(target)-gcc && \
 		sed -e 's,@VERSION@,$(version),' support/gcc.in > $(prefix)/bin/$(target)-gcc && \
 		chmod a+x $(prefix)/bin/$(target)-gcc
 
 install-stage1-libgcc: | $(pkgbuilddir)/stage1
-	cd $(pkgbuilddir)/stage1 && $(env) $(MAKE) -j $(num-jobs) all-target-libgcc
-	cd $(pkgbuilddir)/stage1 && $(env) $(MAKE) install-target-libgcc
+	cd $(pkgbuilddir)/stage1 && $(MAKE) -j $(num-jobs) all-target-libgcc
+	cd $(pkgbuilddir)/stage1 && $(MAKE) install-target-libgcc
 
 $(pkgbuilddir)/stage2: | $(pkgsrcdir)
 	mkdir -p $@
@@ -118,9 +118,9 @@ else
 endif
 
 install: | $(pkgbuilddir)/stage2
-	cd $(pkgbuilddir)/stage2 && $(env) ../../configure $(stage2-conf-args)
-	cd $(pkgbuilddir)/stage2 && $(env) $(MAKE) -j $(num-jobs)
-	cd $(pkgbuilddir)/stage2 && $(env) $(MAKE) install
+	cd $(pkgbuilddir)/stage2 && ../../configure $(stage2-conf-args)
+	cd $(pkgbuilddir)/stage2 && $(MAKE) -j $(num-jobs)
+	cd $(pkgbuilddir)/stage2 && $(MAKE) install
 	rm $(prefix)/bin/$(target)-gcc && \
 		sed -e 's,@VERSION@,$(version),' support/gcc.in > $(prefix)/bin/$(target)-gcc && \
 		chmod a+x $(prefix)/bin/$(target)-gcc

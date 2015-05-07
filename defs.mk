@@ -14,4 +14,5 @@ num-jobs = 8
 build = $(shell support/config.guess)
 host = $(target)
 
-env = LD_LIBRARY_PATH=$(prefix)/lib PATH=$(prefix)/bin:${PATH}
+LD_LIBRARY_PATH = $(prefix)/lib
+PATH := $(prefix)/bin:$(PATH)

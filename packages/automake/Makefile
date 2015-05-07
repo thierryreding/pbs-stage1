@@ -13,7 +13,7 @@ conf-args = \
 	--prefix=$(prefix)
 
 install: | $(pkgbuilddir)
-	cd $(pkgbuilddir) && $(env) ./configure $(conf-args)
+	cd $(pkgbuilddir) && ./configure $(conf-args)
 	cd $(pkgbuilddir) && $(MAKE) -j $(num-jobs)
 	cd $(pkgbuilddir) && $(MAKE) install
 
