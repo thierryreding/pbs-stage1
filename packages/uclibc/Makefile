@@ -21,6 +21,7 @@ ifeq ($(arch),arm)
 endif
 
 common-vars = \
+	KERNEL_HEADERS='$(sysroot)/usr/include' \
 	CROSS_COMPILE=$(target)- \
 	RUNTIME_PREFIX=/usr/ \
 	DEVEL_PREFIX=/usr/ \
