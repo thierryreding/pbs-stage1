@@ -1,5 +1,5 @@
 package = isl
-version = 0.14
+version = 0.16
 
 location = http://isl.gforge.inria.fr
 tarballs = $(package)-$(version).tar.xz
