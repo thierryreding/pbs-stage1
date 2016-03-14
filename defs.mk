@@ -16,3 +16,5 @@ host = $(target)
 
 LD_LIBRARY_PATH = $(prefix)/lib
 PATH := $(prefix)/bin:$(PATH)
+
+export LD_LIBRARY_PATH PATH
