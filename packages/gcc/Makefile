@@ -1,5 +1,5 @@
 package = gcc
-version = 4.9.2
+version = 5.3.0
 
 location = http://ftp.gnu.org/pub/gnu/$(package)/$(package)-$(version)
 tarballs = $(package)-$(version).tar.bz2
