@@ -1,5 +1,5 @@
 package = pkg-config
-version = 0.28
+version = 0.29.1
 
 location = http://pkgconfig.freedesktop.org/releases
 tarballs = $(package)-$(version).tar.gz
