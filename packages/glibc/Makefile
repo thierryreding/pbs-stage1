@@ -10,15 +10,21 @@ srcdir = $(CURDIR)/packages/$(package)
 
 include packages/common.mk
 
+#
+# Force gcc for the build to avoid using the bootstrap compiler from stage 1
+# if $build == $host. Otherwise the stage1 glibc build will fail because it
+# will try to use the bootstrap compiler to generate programs needed during
+# the build.
+#
+ifeq ($(build),$(host))
+  common-conf-vars += BUILD_CC=gcc
+endif
+
 $(pkgbuilddir): | $(pkgsrcdir)
 	mkdir -p $@
 
 $(pkgbuilddir)/stage1 $(pkgbuilddir)/stage2: | $(pkgbuilddir)
 	mkdir -p $@
-
-install-vars = \
-	install_root=$(sysroot) \
-	prefix=/usr
 
 stage1-conf-args = \
 	--build=$(build) \
@@ -32,23 +38,15 @@ stage1-conf-args = \
 	--enable-addons=ports
 
 stage1-conf-vars = \
+	$(common-conf-vars) \
 	libc_cv_forced_unwind=yes
 
-#
-# TODO: Fix this for x86_64. It fails during install-headers with this:
-#
-#     In file included from /home/thierry.reding/pbs-stage1/x86_64-unknown-linux-gnu/sys-root/usr/include/errno.h:28:0,
-#                      from rpc_main.c:37:
-#     /home/thierry.reding/pbs-stage1/x86_64-unknown-linux-gnu/sys-root/usr/include/features.h:399:23: fatal error: gnu/stubs.h: No such file or directory
-#      #include <gnu/stubs.h>
-#                            ^
-#     compilation terminated.
-#
+install-vars = \
+	DESTDIR=$(sysroot)
+
 install-stage1: | $(pkgbuilddir)/stage1
 	cd $(pkgbuilddir)/stage1 && \
 		../../configure $(stage1-conf-args) $(stage1-conf-vars)
-	#mkdir -p $(sysroot-prefix)/include/gnu && \
-	#	touch $(sysroot-prefix)/include/gnu/stubs.h
 	cd $(pkgbuilddir)/stage1 && \
 		$(MAKE) $(install-vars) install-headers
 	touch $(sysroot-prefix)/include/gnu/stubs.h
@@ -65,8 +63,14 @@ stage2-conf-args = \
 	--enable-addons=ports
 
 stage2-conf-vars = \
+	$(common-conf-vars) \
 	libc_cv_ssp=no
 
+$(pkgbuilddir)/stage2/configparms: | $(pkgbuilddir)/stage2
+	echo "slibdir=/usr/lib" > $@
+	echo "rtlddir=/usr/lib" >> $@
+	echo "sbindir=/usr/bin" >> $@
+	echo "rootsbindir=/usr/bin" >> $@
 #
 # On IA64, the programs built by glibc cannot be properly linked because
 # they reference symbols defined only by the shared libunwind that is
@@ -74,26 +78,14 @@ stage2-conf-vars = \
 # build system to not build the problematic programs.
 #
 ifeq ($(arch),ia64)
-install: $(pkgbuilddir)/stage2/configparms
-
-$(pkgbuilddir)/stage2/configparms:
-	echo "build-programs = no" > $@
-endif
-
-ifeq ($(arch),aarch64)
-install: $(pkgbuilddir)/stage2/configparms
-
-$(pkgbuilddir)/stage2/configparms:
-	echo "slibdir=/usr/lib" > $@
-	echo "sbindir=/usr/bin" >> $@
-	echo "rootsbindir=/usr/bin" >> $@
+	echo "build-programs=no" >> $@
 endif
 
 #
 # HACK: build a 32-bit variant of the GNU C library for biarch support
 #
 ifeq ($(arch),powerpc64)
-$(pkgbuilddir)/stage2/32 $(pkgbuilddir)/stage2/64: | $(pkgbuilddir)/stage2
+$(pkgbuilddir)/stage2/32 $(pkgbuilddir)/stage2/64: $(pkgbuilddir)/stage2/configparms
 	mkdir -p $@
 
 target-32 = $(subst powerpc64,powerpc,$(target))
@@ -118,7 +110,7 @@ install-64: | $(pkgbuilddir)/stage2/64
 
 install: install-32 install-64
 else
-install: | $(pkgbuilddir)/stage2
+install: $(pkgbuilddir)/stage2/configparms
 	cd $(pkgbuilddir)/stage2 && \
 		../../configure $(stage2-conf-args) $(stage2-conf-vars)
 	cd $(pkgbuilddir)/stage2 && \
