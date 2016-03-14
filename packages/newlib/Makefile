@@ -23,8 +23,7 @@ install-stage1: | $(pkgbuilddir)
 		$(env) $(MAKE) -j $(num-jobs)
 	cd $(pkgbuilddir) && \
 		$(env) $(MAKE) $(install-vars) install
-	rmdir $(sysroot-prefix)/include && \
-		mv $(sysroot-prefix)/$(target)/include $(sysroot-prefix)/include
+	mv $(sysroot-prefix)/$(target)/include $(sysroot-prefix)/include
 	mv $(sysroot-prefix)/$(target)/lib $(sysroot-prefix)/lib
 
 install: | $(pkgbuilddir)
