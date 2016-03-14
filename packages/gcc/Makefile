@@ -126,6 +126,16 @@ ifeq ($(arch),score)
   stage1-conf-args += --enable-obsolete
 endif
 
+ifeq ($(arch),x86)
+  stage1-conf-args += --disable-multilib
+  stage2-conf-args += --disable-multilib
+endif
+
+ifeq ($(arch),x86_64)
+  stage1-conf-args += --disable-multilib
+  stage2-conf-args += --disable-multilib
+endif
+
 ifeq ($(os),none)
   stage2-conf-args += --enable-multilib --with-newlib --disable-threads --disable-libssp
 
