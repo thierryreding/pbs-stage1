@@ -1,5 +1,5 @@
 package = cloog
-version = 0.18.3
+version = 0.18.4
 
 location = http://www.bastoul.net/cloog/pages/download
 tarballs = $(package)-$(version).tar.gz
