@@ -1,5 +1,5 @@
 package = glibc
-version = 2.23
+version = 2.25
 
 location = http://ftp.gnu.org/pub/gnu/$(package)
 tarballs = $(package)-$(version).tar.xz
@@ -63,8 +63,7 @@ stage2-conf-args = \
 	--enable-addons=ports
 
 stage2-conf-vars = \
-	$(common-conf-vars) \
-	libc_cv_ssp=no
+	$(common-conf-vars)
 
 $(pkgbuilddir)/stage2/configparms: | $(pkgbuilddir)/stage2
 	echo "slibdir=/usr/lib" > $@
