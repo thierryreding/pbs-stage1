@@ -1,5 +1,5 @@
 package = gdb
-version = 7.11
+version = 8.0
 
 location = http://ftp.gnu.org/gnu/$(package)
 tarballs = $(package)-$(version).tar.xz
@@ -15,7 +15,8 @@ conf-args = \
 	--infodir=$(exec-prefix)/share/info \
 	--mandir=$(exec-prefix)/share/man \
 	--program-prefix=$(host)- \
-	--enable-multilib
+	--enable-multilib \
+	--without-guile
 
 ifeq ($(arch),arm)
   conf-args += --enable-interwork
