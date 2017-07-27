@@ -1,5 +1,5 @@
 package = gcc
-version = 5.3.0
+version = 7.1.0
 
 location = http://ftp.gnu.org/pub/gnu/$(package)/$(package)-$(version)
 tarballs = $(package)-$(version).tar.bz2
@@ -14,10 +14,6 @@ include packages/common.mk
 
 $(pkgbuilddir)/stage1: | $(pkgsrcdir)
 	mkdir -p $@
-
-$(pkgsrcdir)/stamp-patched: | $(pkgsrcdir)
-	cd $(pkgsrcdir) && patch -p1 < $(srcdir)/patches/blackfin.patch
-	touch $@
 
 stage1-conf-args = \
 	--target=$(host) \
@@ -73,7 +69,7 @@ else
   endif
 endif
 
-install-stage1: $(pkgsrcdir)/stamp-patched | $(pkgbuilddir)/stage1
+install-stage1: | $(pkgbuilddir)/stage1
 	cd $(pkgbuilddir)/stage1 && ../../configure $(stage1-conf-args)
 	cd $(pkgbuilddir)/stage1 && $(MAKE) -j $(num-jobs) all-gcc
 	cd $(pkgbuilddir)/stage1 && $(MAKE) install-gcc
@@ -152,7 +148,7 @@ else
   endif
 endif
 
-install: $(pkgsrcdir)/stamp-patched | $(pkgbuilddir)/stage2
+install: | $(pkgbuilddir)/stage2
 	cd $(pkgbuilddir)/stage2 && ../../configure $(stage2-conf-args)
 	cd $(pkgbuilddir)/stage2 && $(MAKE) -j $(num-jobs)
 	cd $(pkgbuilddir)/stage2 && $(MAKE) install
