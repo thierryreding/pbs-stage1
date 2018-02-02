@@ -1,8 +1,8 @@
 package = gcc
-version = 7.2.0
+version = 7.3.0
 
 location = http://ftp.gnu.org/pub/gnu/$(package)/$(package)-$(version)
-tarballs = $(package)-$(version).tar.bz2
+tarballs = $(package)-$(version).tar.xz
 
 pkgsrcdir = $(builddir)/$(package)-$(version)
 pkgbuilddir = $(pkgsrcdir)/target-$(target)
