@@ -1,5 +1,5 @@
 package = ccache
-version = 3.3.6
+version = 3.4.2
 
 location = http://www.samba.org/ftp/$(package)
 tarballs = $(package)-$(version).tar.xz
