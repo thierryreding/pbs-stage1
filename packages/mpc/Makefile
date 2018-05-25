@@ -1,7 +1,7 @@
 package = mpc
-version = 1.0.3
+version = 1.1.0
 
-location = http://www.multiprecision.org/$(package)/download
+location = https://ftp.gnu.org/gnu/mpc
 tarballs = $(package)-$(version).tar.gz
 
 pkgsrcdir = $(builddir)/$(package)-$(version)
