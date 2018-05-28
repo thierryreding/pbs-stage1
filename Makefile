@@ -131,6 +131,7 @@ targets = gcc gdb libtool pkgconfig ccache autoconf automake quilt
 all: $(targets)
 
 uninstall:
+	rm -rf $(prefix)/lib/lib$(target)-sim.a
 	rm -rf $(prefix)/lib/gcc/$(target)
 	rm -rf $(prefix)/bin/$(target)-*
 	rm -rf $(prefix)/$(target)
