@@ -36,8 +36,14 @@ stage1-conf-args = \
 	--disable-nls
 
 ifeq ($(arch),arm)
+  stage1-conf-args += --with-arch=armv7-a
+
   ifeq ($(fp),hard)
     stage1-conf-args += --with-float=hard
+
+    ifeq ($(abi),eabi)
+      stage1-conf-args += --with-fpu=vfp
+    endif
   else
     stage1-conf-args += --with-float=softfp
   endif
@@ -105,8 +111,14 @@ stage2-conf-args = \
 	--disable-nls
 
 ifeq ($(arch),arm)
+  stage2-conf-args += --with-arch=armv7-a
+
   ifeq ($(fp),hard)
     stage2-conf-args += --with-float=hard
+
+    ifeq ($(abi),eabi)
+      stage2-conf-args += --with-fpu=vfp
+    endif
   else
     stage2-conf-args += --with-float=softfp
   endif
