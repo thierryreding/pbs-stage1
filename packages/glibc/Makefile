@@ -1,5 +1,5 @@
 package = glibc
-version = 2.27
+version = 2.29
 
 location = http://ftp.gnu.org/pub/gnu/$(package)
 tarballs = $(package)-$(version).tar.xz
