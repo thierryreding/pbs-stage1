@@ -1,5 +1,5 @@
 package = linux
-version = 4.16
+version = 4.20
 
 major = $(word 1,$(subst ., ,$(version)))
 
