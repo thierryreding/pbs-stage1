@@ -1,5 +1,5 @@
 package = gcc
-version = 8.1.0
+version = 8.2.0
 
 location = http://ftp.gnu.org/pub/gnu/$(package)/$(package)-$(version)
 tarballs = $(package)-$(version).tar.xz
@@ -31,7 +31,7 @@ stage1-conf-args = \
 	--with-ppl=$(prefix) \
 	--with-cloog=$(prefix) \
 	--enable-cloog-backend=isl \
-	--enable-languages=c \
+	--enable-languages=c,c++ \
 	--disable-shared \
 	--disable-nls
 
