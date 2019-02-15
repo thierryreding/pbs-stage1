@@ -1,5 +1,5 @@
 package = binutils
-version = 2.30
+version = 2.32
 
 location = http://ftp.gnu.org/gnu/$(package)
 tarballs = $(package)-$(version).tar.bz2
