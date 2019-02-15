@@ -13,7 +13,11 @@ include packages/common.mk
 conf-args = \
 	--prefix=$(prefix)
 
-install: | $(pkgsrcdir)
+$(pkgsrcdir)/stamp-patch: | $(pkgsrcdir)
+	cd $(pkgsrcdir) && patch -p1 < $(srcdir)/m4-1.4.18-glibc-change-work-around.patch
+	touch $@
+
+install: $(pkgsrcdir)/stamp-patch | $(pkgsrcdir)
 	cd $(pkgbuilddir) && ./configure $(conf-args)
 	cd $(pkgbuilddir) && $(MAKE) -j $(num-jobs)
 	cd $(pkgbuilddir) && $(MAKE) install
