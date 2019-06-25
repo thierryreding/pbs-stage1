@@ -1,7 +1,7 @@
 package = ccache
-version = 3.6
+version = 3.7.1
 
-location = http://www.samba.org/ftp/$(package)
+location = https://github.com/ccache/ccache/releases/download/v$(version)
 tarballs = $(package)-$(version).tar.xz
 
 pkgsrcdir = $(builddir)/$(package)-$(version)
