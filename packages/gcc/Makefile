@@ -1,5 +1,5 @@
 package = gcc
-version = 8.2.0
+version = 9.1.0
 
 location = http://ftp.gnu.org/pub/gnu/$(package)/$(package)-$(version)
 tarballs = $(package)-$(version).tar.xz
@@ -128,6 +128,11 @@ ifeq ($(arch),bfin)
   stage2-conf-args += --disable-threads
 else
   stage2-conf-args += --enable-threads=posix
+endif
+
+ifeq ($(arch),riscv)
+  stage1-conf-args += --disable-multilib
+  stage2-conf-args += --disable-multilib
 endif
 
 ifeq ($(arch),score)
