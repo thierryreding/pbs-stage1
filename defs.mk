@@ -1,4 +1,4 @@
-release = 2019.02
+release = 2019.06
 
 downloaddir = download
 top_builddir = build
