@@ -1,5 +1,5 @@
 package = gcc
-version = 9.2.0
+version = 9.3.0
 
 location = http://ftp.gnu.org/pub/gnu/$(package)/$(package)-$(version)
 tarballs = $(package)-$(version).tar.xz
@@ -11,6 +11,10 @@ srcdir = $(CURDIR)/packages/$(package)
 includedir = $(prefix)/lib/gcc/$(target)/$(version)/include
 
 include packages/common.mk
+
+$(pkgsrcdir)/stamp-patch: | $(pkgsrcdir)
+	cd $(pkgsrcdir) && patch -p1 < $(srcdir)/patches/ipc-perm.patch
+	touch $@
 
 $(pkgbuilddir)/stage1: | $(pkgsrcdir)
 	mkdir -p $@
@@ -75,7 +79,7 @@ else
   endif
 endif
 
-install-stage1: | $(pkgbuilddir)/stage1
+install-stage1: $(pkgsrcdir)/stamp-patch | $(pkgbuilddir)/stage1
 	cd $(pkgbuilddir)/stage1 && ../../configure $(stage1-conf-args)
 	cd $(pkgbuilddir)/stage1 && $(MAKE) -j $(num-jobs) all-gcc
 	cd $(pkgbuilddir)/stage1 && $(MAKE) install-gcc
@@ -83,7 +87,7 @@ install-stage1: | $(pkgbuilddir)/stage1
 		sed -e 's,@VERSION@,$(version),' support/gcc.in > $(prefix)/bin/$(target)-gcc && \
 		chmod a+x $(prefix)/bin/$(target)-gcc
 
-install-stage1-libgcc: | $(pkgbuilddir)/stage1
+install-stage1-libgcc: $(pkgsrcdir)/stamp-patch | $(pkgbuilddir)/stage1
 	cd $(pkgbuilddir)/stage1 && $(MAKE) -j $(num-jobs) all-target-libgcc
 	cd $(pkgbuilddir)/stage1 && $(MAKE) install-target-libgcc
 
@@ -165,7 +169,7 @@ else
   endif
 endif
 
-install: | $(pkgbuilddir)/stage2
+install: $(pkgsrcdir)/stamp-patch | $(pkgbuilddir)/stage2
 	cd $(pkgbuilddir)/stage2 && ../../configure $(stage2-conf-args)
 	cd $(pkgbuilddir)/stage2 && $(MAKE) -j $(num-jobs)
 	cd $(pkgbuilddir)/stage2 && $(MAKE) install
