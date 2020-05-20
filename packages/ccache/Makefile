@@ -1,5 +1,5 @@
 package = ccache
-version = 3.7.7
+version = 3.7.9
 
 location = https://github.com/ccache/ccache/releases/download/v$(version)
 tarballs = $(package)-$(version).tar.xz
