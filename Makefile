@@ -84,7 +84,11 @@ $(prefix)/meta/$(target)-gcc: $(prefix)/meta/mpc
 
 gcc: $(prefix)/meta/$(target)-gcc
 
-$(prefix)/meta/$(target)-gdb:
+$(prefix)/meta/boost:
+	$(MAKE) -f packages/boost/Makefile install
+	touch $@
+
+$(prefix)/meta/$(target)-gdb: $(prefix)/meta/boost
 	$(MAKE) -f packages/gdb/Makefile install
 	touch $@
 
