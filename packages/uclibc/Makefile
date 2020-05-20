@@ -1,8 +1,8 @@
-package = uclibc
-version = 0.9.33.2
+package = uclibc-ng
+version = 1.0.34
 
-location = http://uclibc.org/downloads
-tarballs = uClibc-$(version).tar.xz
+location = https://downloads.uclibc-ng.org/releases/$(version)
+tarballs = uClibc-ng-$(version).tar.xz
 
 pkgsrcdir = $(builddir)/uClibc-$(version)
 pkgbuilddir = $(pkgsrcdir)/target-$(target)
@@ -27,13 +27,7 @@ common-vars = \
 	DEVEL_PREFIX=/usr/ \
 	PREFIX=$(sysroot)
 
-$(pkgsrcdir)/.patch: | $(pkgsrcdir)
-	cd $(pkgsrcdir) && \
-		patch -p1 < $(srcdir)/patches/latest.patch && \
-		patch -p1 < $(srcdir)/patches/out-of-tree.patch
-	touch $@
-
-$(pkgbuilddir)/stage1 $(pkgbuilddir)/stage2: $(pkgsrcdir)/.patch
+$(pkgbuilddir)/stage1 $(pkgbuilddir)/stage2:
 	mkdir -p $@
 
 $(pkgbuilddir)/stage1/.config: $(defconfig) | $(pkgbuilddir)/stage1
