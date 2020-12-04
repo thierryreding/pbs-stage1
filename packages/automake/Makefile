@@ -1,5 +1,5 @@
 package = automake
-version = 1.16.2
+version = 1.16.3
 
 location = http://ftp.gnu.org/gnu/$(package)
 tarballs = $(package)-$(version).tar.xz
