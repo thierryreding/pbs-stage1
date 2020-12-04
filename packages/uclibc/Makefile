@@ -1,5 +1,5 @@
 package = uclibc-ng
-version = 1.0.34
+version = 1.0.36
 
 location = https://downloads.uclibc-ng.org/releases/$(version)
 tarballs = uClibc-ng-$(version).tar.xz
