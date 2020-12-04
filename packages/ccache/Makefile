@@ -1,5 +1,5 @@
 package = ccache
-version = 3.7.9
+version = 4.1
 
 location = https://github.com/ccache/ccache/releases/download/v$(version)
 tarballs = $(package)-$(version).tar.xz
@@ -9,11 +9,11 @@ pkgbuilddir = $(pkgsrcdir)
 
 include packages/common.mk
 
-conf-args = \
-	--prefix=$(prefix)
+cmake-args = \
+	-DCMAKE_INSTALL_PREFIX=$(prefix)
 
 install: | $(pkgbuilddir)
-	cd $(pkgbuilddir) && ./configure $(conf-args)
+	cd $(pkgbuilddir) && cmake $(cmake-args) $(abspath $(pkgsrcdir))
 	cd $(pkgbuilddir) && $(MAKE) -j $(num-jobs)
 	cd $(pkgbuilddir) && $(MAKE) install
 
