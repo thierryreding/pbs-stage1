@@ -1,5 +1,5 @@
 package = glibc
-version = 2.31
+version = 2.32
 
 location = http://ftp.gnu.org/pub/gnu/$(package)
 tarballs = $(package)-$(version).tar.xz
@@ -84,14 +84,14 @@ endif
 # HACK: build a 32-bit variant of the GNU C library for biarch support
 #
 ifeq ($(arch),powerpc64)
-$(pkgbuilddir)/stage2/32 $(pkgbuilddir)/stage2/64: $(pkgbuilddir)/stage2/configparms
+$(pkgbuilddir)/stage2/32 $(pkgbuilddir)/stage2/64:
 	mkdir -p $@
 
 target-32 = $(subst powerpc64,powerpc,$(target))
 stage2-32-conf-args = $(subst --host=$(target),--host=$(target-32),$(stage2-conf-args))
 stage2-32-conf-vars = $(stage2-conf-vars) CC='$(target)-gcc -m32'
 
-install-32: | $(pkgbuilddir)/stage2/32
+install-32: $(pkgbuilddir)/stage2/configparams | $(pkgbuilddir)/stage2/32
 	cd $(pkgbuilddir)/stage2/32 && \
 		../../../configure $(stage2-32-conf-args) $(stage2-32-conf-vars)
 	cd $(pkgbuilddir)/stage2/32 && \
@@ -99,7 +99,7 @@ install-32: | $(pkgbuilddir)/stage2/32
 	cd $(pkgbuilddir)/stage2/32 && \
 		$(MAKE) $(install-vars) install
 
-install-64: | $(pkgbuilddir)/stage2/64
+install-64: $(pkgbuilddir)/stage2/configparams | $(pkgbuilddir)/stage2/64
 	cd $(pkgbuilddir)/stage2/64 && \
 		../../../configure $(stage2-conf-args) $(stage2-conf-vars)
 	cd $(pkgbuilddir)/stage2/64 && \
