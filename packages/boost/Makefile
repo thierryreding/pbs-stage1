@@ -1,5 +1,5 @@
 package = boost
-version = 1.73.0
+version = 1.74.0
 
 location = https://dl.bintray.com/boostorg/release/$(version)/source
 tarballs = $(package)_$(subst .,_,$(version)).tar.bz2
