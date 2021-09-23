@@ -1,5 +1,5 @@
 package = glibc
-version = 2.33
+version = 2.34
 
 location = http://ftp.gnu.org/pub/gnu/$(package)
 tarballs = $(package)-$(version).tar.xz
@@ -20,7 +20,7 @@ ifeq ($(build),$(host))
   common-conf-vars += BUILD_CC=gcc
 endif
 
-$(pkgbuilddir): | $(pkgsrcdir)
+$(pkgbuilddir):
 	mkdir -p $@
 
 $(pkgbuilddir)/stage1 $(pkgbuilddir)/stage2: | $(pkgbuilddir)
