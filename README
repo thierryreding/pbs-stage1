@@ -30,6 +30,11 @@ for example to point to /opt or /usr/local.
 
 Dependencies:
 =============
+* patch
+* gcc
 * flex
 * bison
 * help2man
+* python
+* cmake
+* rsync
