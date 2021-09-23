@@ -118,6 +118,12 @@ $(prefix)/meta/autoconf:
 
 autoconf: $(prefix)/meta/autoconf
 
+$(prefix)/meta/autoconf-archive:
+	$(MAKE) -f packages/autoconf-archive/Makefile install
+	touch $@
+
+autoconf-archive: $(prefix)/meta/autoconf-archive
+
 $(prefix)/meta/automake:
 	$(MAKE) -f packages/automake/Makefile install
 	touch $@
@@ -130,7 +136,7 @@ $(prefix)/meta/quilt:
 
 quilt: $(prefix)/meta/quilt
 
-targets = gcc gdb libtool pkgconfig ccache autoconf automake quilt
+targets = gcc gdb libtool pkgconfig ccache autoconf autoconf-archive automake quilt
 
 all: $(targets)
 
