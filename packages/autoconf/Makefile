@@ -1,5 +1,5 @@
 package = autoconf
-version = 2.69
+version = 2.71
 
 location = http://ftp.gnu.org/gnu/$(package)
 tarballs = $(package)-$(version).tar.xz
