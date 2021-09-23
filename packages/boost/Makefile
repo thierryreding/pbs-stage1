@@ -1,7 +1,7 @@
 package = boost
-version = 1.74.0
+version = 1.77.0
 
-location = https://dl.bintray.com/boostorg/release/$(version)/source
+location = https://boostorg.jfrog.io/artifactory/main/release/$(version)/source/
 tarballs = $(package)_$(subst .,_,$(version)).tar.bz2
 
 pkgsrcdir = $(builddir)/$(package)_$(subst .,_,$(version))
