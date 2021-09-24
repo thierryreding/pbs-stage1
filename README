@@ -23,10 +23,10 @@ The available toolchains are defined in the "targets" subdirectory.
 	x86_64-unknown-linux-gnu.mk
 
 By default, the created toolchain is installed into $HOME/pbs-stage1. To
-choose a different install directory you can override the "prefix" variable,
+choose a different install directory you can override the "PREFIX" variable,
 for example to point to /opt or /usr/local.
 
-	$ make prefix=/usr/local TARGET=arm-unknown-linux-gnueabi
+	$ make PREFIX=/usr/local TARGET=arm-unknown-linux-gnueabi
 
 Dependencies:
 =============

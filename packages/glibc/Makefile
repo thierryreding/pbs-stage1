@@ -20,7 +20,7 @@ ifeq ($(build),$(host))
   common-conf-vars += BUILD_CC=gcc
 endif
 
-$(pkgbuilddir):
+$(pkgbuilddir): | $(pkgsrcdir)
 	mkdir -p $@
 
 $(pkgbuilddir)/stage1 $(pkgbuilddir)/stage2: | $(pkgbuilddir)
@@ -34,7 +34,7 @@ stage1-conf-args = \
 	--infodir=/usr/share/info \
 	--mandir=/usr/share/man \
 	--program-prefix=$(target)- \
-	--with-headers=$(sysroot-prefix)/include \
+	--with-headers=$(DESTDIR)$(sysroot-prefix)/include \
 	--enable-addons=ports
 
 stage1-conf-vars = \
@@ -42,14 +42,18 @@ stage1-conf-vars = \
 	libc_cv_forced_unwind=yes
 
 install-vars = \
-	DESTDIR=$(sysroot)
+	DESTDIR=$(DESTDIR)$(sysroot)
+
+$(info stage1-conf-args: $(stage1-conf-args))
+$(info install-vars: $(install-vars))
 
 install-stage1: | $(pkgbuilddir)/stage1
 	cd $(pkgbuilddir)/stage1 && \
 		../../configure $(stage1-conf-args) $(stage1-conf-vars)
 	cd $(pkgbuilddir)/stage1 && \
 		$(MAKE) $(install-vars) install-headers
-	touch $(sysroot-prefix)/include/gnu/stubs.h
+	mkdir -p $(DESTDIR)$(sysroot-prefix)/include/gnu && \
+		touch $(DESTDIR)$(sysroot-prefix)/include/gnu/stubs.h
 
 stage2-conf-args = \
 	--build=$(build) \
@@ -59,7 +63,7 @@ stage2-conf-args = \
 	--infodir=/usr/share/info \
 	--mandir=/usr/share/man \
 	--program-prefix=$(target)- \
-	--with-headers=$(sysroot-prefix)/include \
+	--with-headers=$(DESTDIR)$(sysroot-prefix)/include \
 	--enable-addons=ports
 
 stage2-conf-vars = \

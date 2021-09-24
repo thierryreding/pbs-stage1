@@ -8,7 +8,7 @@ pkgsrcdir = $(builddir)/$(package)-$(version)
 pkgbuilddir = $(pkgsrcdir)/target-$(target)
 srcdir = $(CURDIR)/packages/$(package)
 
-includedir = $(prefix)/lib/gcc/$(target)/$(version)/include
+includedir = $(PREFIX)/lib/gcc/$(target)/$(version)/include
 
 include packages/common.mk
 
@@ -17,19 +17,19 @@ $(pkgbuilddir)/stage1: | $(pkgsrcdir)
 
 stage1-conf-args = \
 	--target=$(host) \
-	--prefix=$(prefix) \
+	--prefix=$(PREFIX) \
 	--datadir=$(exec-prefix)/share \
 	--infodir=$(exec-prefix)/share/info \
 	--mandir=$(exec-prefix)/share/man \
-	--libexecdir=$(prefix)/lib \
+	--libexecdir=$(PREFIX)/lib \
 	--includedir=$(includedir) \
 	--with-pkgversion="PBS $(release)" \
 	--program-prefix=$(target)- \
-	--with-sysroot=$(sysroot) \
-	--with-mpfr=$(prefix) \
-	--with-gmp=$(prefix) \
-	--with-ppl=$(prefix) \
-	--with-cloog=$(prefix) \
+	--with-sysroot=$(DESTDIR)$(sysroot) \
+	--with-mpfr=$(DESTDIR)$(PREFIX) \
+	--with-gmp=$(DESTDIR)$(PREFIX) \
+	--with-ppl=$(DESTDIR)$(PREFIX) \
+	--with-cloog=$(DESTDIR)$(PREFIX) \
 	--enable-cloog-backend=isl \
 	--enable-languages=c,c++ \
 	--disable-shared \
@@ -75,37 +75,41 @@ else
   endif
 endif
 
+install-args = \
+	DESTDIR=$(DESTDIR)
+
 install-stage1: | $(pkgbuilddir)/stage1
 	cd $(pkgbuilddir)/stage1 && ../../configure $(stage1-conf-args)
 	cd $(pkgbuilddir)/stage1 && $(MAKE) -j $(num-jobs) all-gcc
-	cd $(pkgbuilddir)/stage1 && $(MAKE) install-gcc
-	rm $(prefix)/bin/$(target)-gcc && \
-		sed -e 's,@VERSION@,$(version),' support/gcc.in > $(prefix)/bin/$(target)-gcc && \
-		chmod a+x $(prefix)/bin/$(target)-gcc
+	cd $(pkgbuilddir)/stage1 && $(MAKE) $(install-args) install-gcc
+	rm $(DESTDIR)$(PREFIX)/bin/$(target)-gcc && \
+		sed -e 's,@VERSION@,$(version),' support/gcc.in > \
+			$(DESTDIR)$(PREFIX)/bin/$(target)-gcc && \
+		chmod a+x $(DESTDIR)$(PREFIX)/bin/$(target)-gcc
 
 install-stage1-libgcc: | $(pkgbuilddir)/stage1
 	cd $(pkgbuilddir)/stage1 && $(MAKE) -j $(num-jobs) all-target-libgcc
-	cd $(pkgbuilddir)/stage1 && $(MAKE) install-target-libgcc
+	cd $(pkgbuilddir)/stage1 && $(MAKE) $(install-args) install-target-libgcc
 
 $(pkgbuilddir)/stage2: | $(pkgsrcdir)
 	mkdir -p $@
 
 stage2-conf-args = \
 	--target=$(host) \
-	--prefix=$(prefix) \
+	--prefix=$(PREFIX) \
 	--datadir=$(exec-prefix)/share \
 	--infodir=$(exec-prefix)/share/info \
 	--mandir=$(exec-prefix)/share/man \
-	--libexecdir=$(prefix)/lib \
+	--libexecdir=$(PREFIX)/lib \
 	--includedir=$(includedir) \
 	--with-gxx-include-dir=$(includedir)/c++ \
 	--with-pkg-version="PBS $(release)" \
 	--program-prefix=$(target)- \
-	--with-sysroot=$(sysroot) \
-	--with-mpfr=$(prefix) \
-	--with-gmp=$(prefix) \
-	--with-ppl=$(prefix) \
-	--with-cloog=$(prefix) \
+	--with-sysroot=$(DESTDIR)$(sysroot) \
+	--with-mpfr=$(DESTDIR)$(PREFIX) \
+	--with-gmp=$(DESTDIR)$(PREFIX) \
+	--with-ppl=$(DESTDIR)$(PREFIX) \
+	--with-cloog=$(DESTDIR)$(PREFIX) \
 	--enable-cloog-backend=isl \
 	--enable-languages=c,c++,objc,obj-c++ \
 	--disable-nls
@@ -168,13 +172,17 @@ endif
 install: | $(pkgbuilddir)/stage2
 	cd $(pkgbuilddir)/stage2 && ../../configure $(stage2-conf-args)
 	cd $(pkgbuilddir)/stage2 && $(MAKE) -j $(num-jobs)
-	cd $(pkgbuilddir)/stage2 && $(MAKE) install
-	rm $(prefix)/bin/$(target)-gcc && \
-		sed -e 's,@VERSION@,$(version),' support/gcc.in > $(prefix)/bin/$(target)-gcc && \
-		chmod a+x $(prefix)/bin/$(target)-gcc
-	mv $(prefix)/bin/$(target)-cpp $(prefix)/bin/$(target)-cpp-$(version) && ln -s $(target)-gcc $(prefix)/bin/$(target)-cpp
-	mv $(prefix)/bin/$(target)-g++ $(prefix)/bin/$(target)-g++-$(version) && ln -s $(target)-gcc $(prefix)/bin/$(target)-g++
-	mv $(prefix)/bin/$(target)-c++ $(prefix)/bin/$(target)-c++-$(version) && ln -s $(target)-gcc $(prefix)/bin/$(target)-c++
+	cd $(pkgbuilddir)/stage2 && $(MAKE) $(install-args) install
+	rm $(DESTDIR)$(PREFIX)/bin/$(target)-gcc && \
+		sed -e 's,@VERSION@,$(version),' support/gcc.in > \
+			$(DESTDIR)$(PREFIX)/bin/$(target)-gcc && \
+		chmod a+x $(DESTDIR)$(PREFIX)/bin/$(target)-gcc
+	mv $(DESTDIR)$(PREFIX)/bin/$(target)-cpp $(DESTDIR)$(PREFIX)/bin/$(target)-cpp-$(version) && \
+		ln -s $(target)-gcc $(DESTDIR)$(PREFIX)/bin/$(target)-cpp
+	mv $(DESTDIR)$(PREFIX)/bin/$(target)-g++ $(DESTDIR)$(PREFIX)/bin/$(target)-g++-$(version) && \
+		ln -s $(target)-gcc $(DESTDIR)$(PREFIX)/bin/$(target)-g++
+	mv $(DESTDIR)$(PREFIX)/bin/$(target)-c++ $(DESTDIR)$(PREFIX)/bin/$(target)-c++-$(version) && \
+		ln -s $(target)-gcc $(DESTDIR)$(PREFIX)/bin/$(target)-c++
 
 clean:
 	rm -rf $(pkgbuilddir)

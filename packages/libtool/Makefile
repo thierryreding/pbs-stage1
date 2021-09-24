@@ -15,13 +15,16 @@ $(pkgsrcdir)/stamp-patch: | $(pkgsrcdir)
 	touch $@
 
 conf-args = \
-	--prefix=$(prefix) \
-	--infodir=$(prefix)/share/info \
-	--mandir=$(prefix)/share/man
+	--prefix=$(PREFIX) \
+	--infodir=$(PREFIX)/share/info \
+	--mandir=$(PREFIX)/share/man
+
+install-args = \
+	DESTDIR=$(DESTDIR)
 
 install: $(pkgsrcdir)/stamp-patch | $(pkgbuilddir)
 	cd $(pkgbuilddir) && ./configure $(conf-args)
 	cd $(pkgbuilddir) && $(MAKE) -j $(num-jobs)
-	cd $(pkgbuilddir) && $(MAKE) install
+	cd $(pkgbuilddir) && $(MAKE) $(install-args) install
 
 .PHONY: install

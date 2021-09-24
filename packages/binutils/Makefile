@@ -12,7 +12,7 @@ include packages/common.mk
 
 conf-args = \
 	--target=$(host) \
-	--prefix=$(prefix) \
+	--prefix=$(PREFIX) \
 	--datadir=$(exec-prefix)/share \
 	--infodir=$(exec-prefix)/share/info \
 	--mandir=$(exec-prefix)/share/man \
@@ -23,13 +23,16 @@ conf-args = \
 	--enable-gold \
 	--disable-nls
 
+install-args = \
+	DESTDIR=$(DESTDIR)
+
 $(pkgbuilddir): | $(pkgsrcdir)
 	mkdir -p $@
 
 install: | $(pkgbuilddir)
 	cd $(pkgbuilddir) && ../configure $(conf-args)
 	cd $(pkgbuilddir) && $(MAKE) -j $(num-jobs)
-	cd $(pkgbuilddir) && $(MAKE) install
+	cd $(pkgbuilddir) && $(MAKE) $(install-args) install
 
 clean:
 	rm -rf $(pkgbuilddir)

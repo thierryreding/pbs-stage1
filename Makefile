@@ -13,139 +13,139 @@ endif
 
 export arch cpu os libc abi fp target
 
-$(prefix)/meta $(builddir):
+$(DESTDIR)$(PREFIX)/meta $(builddir):
 	mkdir -p $@
 
-$(prefix)/meta/$(target)-binutils: | $(prefix)/meta
+$(DESTDIR)$(PREFIX)/meta/$(target)-binutils: | $(DESTDIR)$(PREFIX)/meta
 	$(MAKE) -f packages/binutils/Makefile install
 	touch $@
 
-$(prefix)/meta/m4: | $(prefix)/meta
+$(DESTDIR)$(PREFIX)/meta/m4: | $(DESTDIR)$(PREFIX)/meta
 	$(MAKE) -f packages/m4/Makefile install
 	touch $@
 
-$(prefix)/meta/gmp: | $(prefix)/meta/m4
+$(DESTDIR)$(PREFIX)/meta/gmp: | $(DESTDIR)$(PREFIX)/meta/m4
 	$(MAKE) -f packages/gmp/Makefile install
 	touch $@
 
-$(prefix)/meta/mpfr: $(prefix)/meta/gmp
+$(DESTDIR)$(PREFIX)/meta/mpfr: $(DESTDIR)$(PREFIX)/meta/gmp
 	$(MAKE) -f packages/mpfr/Makefile install
 	touch $@
 
-$(prefix)/meta/mpc: $(prefix)/meta/gmp $(prefix)/meta/mpfr
+$(DESTDIR)$(PREFIX)/meta/mpc: $(DESTDIR)$(PREFIX)/meta/gmp $(DESTDIR)$(PREFIX)/meta/mpfr
 	$(MAKE) -f packages/mpc/Makefile install
 	touch $@
 
-$(prefix)/meta/$(target)-linux:
+$(DESTDIR)$(PREFIX)/meta/$(target)-linux:
 	$(MAKE) -f packages/linux/Makefile install
 	touch $@
 
-$(prefix)/meta/$(target)-gcc-stage1: $(prefix)/meta/$(target)-binutils
+$(DESTDIR)$(PREFIX)/meta/$(target)-gcc-stage1: $(DESTDIR)$(PREFIX)/meta/$(target)-binutils
 ifeq ($(os),linux)
-$(prefix)/meta/$(target)-gcc-stage1: $(prefix)/meta/$(target)-linux
+$(DESTDIR)$(PREFIX)/meta/$(target)-gcc-stage1: $(DESTDIR)$(PREFIX)/meta/$(target)-linux
 endif
-$(prefix)/meta/$(target)-gcc-stage1: $(prefix)/meta/mpc
+$(DESTDIR)$(PREFIX)/meta/$(target)-gcc-stage1: $(DESTDIR)$(PREFIX)/meta/mpc
 	$(MAKE) -f packages/gcc/Makefile install-stage1
 	touch $@
 
-$(prefix)/meta/$(target)-glibc-stage1: $(prefix)/meta/$(target)-gcc-stage1
+$(DESTDIR)$(PREFIX)/meta/$(target)-glibc-stage1: $(DESTDIR)$(PREFIX)/meta/$(target)-gcc-stage1
 	$(MAKE) -f packages/glibc/Makefile install-stage1
 	touch $@
 
-$(prefix)/meta/$(target)-uclibc-stage1: $(prefix)/meta/$(target)-gcc-stage1
+$(DESTDIR)$(PREFIX)/meta/$(target)-uclibc-stage1: $(DESTDIR)$(PREFIX)/meta/$(target)-gcc-stage1
 	$(MAKE) -f packages/uclibc/Makefile install-stage1
 	touch $@
 
-$(prefix)/meta/$(target)-newlib-stage1: $(prefix)/meta/$(target)-gcc-stage1
+$(DESTDIR)$(PREFIX)/meta/$(target)-newlib-stage1: $(DESTDIR)$(PREFIX)/meta/$(target)-gcc-stage1
 	$(MAKE) -f packages/newlib/Makefile install-stage1
 	touch $@
 
-$(prefix)/meta/$(target)-gcc-stage1-libgcc: $(prefix)/meta/$(target)-$(libc)-stage1
+$(DESTDIR)$(PREFIX)/meta/$(target)-gcc-stage1-libgcc: $(DESTDIR)$(PREFIX)/meta/$(target)-$(libc)-stage1
 	$(MAKE) -f packages/gcc/Makefile install-stage1-libgcc
 	touch $@
 
-$(prefix)/meta/$(target)-glibc: $(prefix)/meta/$(target)-gcc-stage1-libgcc
+$(DESTDIR)$(PREFIX)/meta/$(target)-glibc: $(DESTDIR)$(PREFIX)/meta/$(target)-gcc-stage1-libgcc
 	$(MAKE) -f packages/glibc/Makefile install
 	touch $@
 
-$(prefix)/meta/$(target)-uclibc: $(prefix)/meta/$(target)-gcc-stage1-libgcc
+$(DESTDIR)$(PREFIX)/meta/$(target)-uclibc: $(DESTDIR)$(PREFIX)/meta/$(target)-gcc-stage1-libgcc
 	$(MAKE) -f packages/uclibc/Makefile install
 	touch $@
 
-$(prefix)/meta/$(target)-newlib: $(prefix)/meta/$(target)-gcc-stage1-libgcc
+$(DESTDIR)$(PREFIX)/meta/$(target)-newlib: $(DESTDIR)$(PREFIX)/meta/$(target)-gcc-stage1-libgcc
 	$(MAKE) -f packages/newlib/Makefile install
 	touch $@
 
-$(prefix)/meta/$(target)-gcc: $(prefix)/meta/$(target)-binutils
-$(prefix)/meta/$(target)-gcc: $(prefix)/meta/$(target)-$(libc)
-$(prefix)/meta/$(target)-gcc: $(prefix)/meta/mpc
+$(DESTDIR)$(PREFIX)/meta/$(target)-gcc: $(DESTDIR)$(PREFIX)/meta/$(target)-binutils
+$(DESTDIR)$(PREFIX)/meta/$(target)-gcc: $(DESTDIR)$(PREFIX)/meta/$(target)-$(libc)
+$(DESTDIR)$(PREFIX)/meta/$(target)-gcc: $(DESTDIR)$(PREFIX)/meta/mpc
 	$(MAKE) -f packages/gcc/Makefile install
 	touch $@
 
-gcc: $(prefix)/meta/$(target)-gcc
+gcc: $(DESTDIR)$(PREFIX)/meta/$(target)-gcc
 
-$(prefix)/meta/boost:
+$(DESTDIR)$(PREFIX)/meta/boost:
 	$(MAKE) -f packages/boost/Makefile install
 	touch $@
 
-$(prefix)/meta/$(target)-gdb: $(prefix)/meta/boost
+$(DESTDIR)$(PREFIX)/meta/$(target)-gdb: $(DESTDIR)$(PREFIX)/meta/boost
 	$(MAKE) -f packages/gdb/Makefile install
 	touch $@
 
-gdb: $(prefix)/meta/$(target)-gdb
+gdb: $(DESTDIR)$(PREFIX)/meta/$(target)-gdb
 
-$(prefix)/meta/libtool:
+$(DESTDIR)$(PREFIX)/meta/libtool:
 	$(MAKE) -f packages/libtool/Makefile install
 	touch $@
 
-libtool: $(prefix)/meta/libtool
+libtool: $(DESTDIR)$(PREFIX)/meta/libtool
 
-$(prefix)/meta/pkgconfig:
+$(DESTDIR)$(PREFIX)/meta/pkgconfig:
 	$(MAKE) -f packages/pkgconfig/Makefile install
 	touch $@
 
-pkgconfig: $(prefix)/meta/pkgconfig
+pkgconfig: $(DESTDIR)$(PREFIX)/meta/pkgconfig
 
-$(prefix)/meta/ccache:
+$(DESTDIR)$(PREFIX)/meta/ccache:
 	$(MAKE) -f packages/ccache/Makefile install
 	touch $@
 
-ccache: $(prefix)/meta/ccache
+ccache: $(DESTDIR)$(PREFIX)/meta/ccache
 
-$(prefix)/meta/autoconf:
+$(DESTDIR)$(PREFIX)/meta/autoconf:
 	$(MAKE) -f packages/autoconf/Makefile install
 	touch $@
 
-autoconf: $(prefix)/meta/autoconf
+autoconf: $(DESTDIR)$(PREFIX)/meta/autoconf
 
-$(prefix)/meta/autoconf-archive:
+$(DESTDIR)$(PREFIX)/meta/autoconf-archive:
 	$(MAKE) -f packages/autoconf-archive/Makefile install
 	touch $@
 
-autoconf-archive: $(prefix)/meta/autoconf-archive
+autoconf-archive: $(DESTDIR)$(PREFIX)/meta/autoconf-archive
 
-$(prefix)/meta/automake:
+$(DESTDIR)$(PREFIX)/meta/automake:
 	$(MAKE) -f packages/automake/Makefile install
 	touch $@
 
-automake: $(prefix)/meta/automake
+automake: $(DESTDIR)$(PREFIX)/meta/automake
 
-$(prefix)/meta/quilt:
+$(DESTDIR)$(PREFIX)/meta/quilt:
 	$(MAKE) -f packages/quilt/Makefile install
 	touch $@
 
-quilt: $(prefix)/meta/quilt
+quilt: $(DESTDIR)$(PREFIX)/meta/quilt
 
 targets = gcc gdb libtool pkgconfig ccache autoconf autoconf-archive automake quilt
 
 all: $(targets)
 
 uninstall:
-	rm -rf $(prefix)/lib/lib$(target)-sim.a
-	rm -rf $(prefix)/lib/gcc/$(target)
-	rm -rf $(prefix)/bin/$(target)-*
-	rm -rf $(prefix)/$(target)
-	rm -rf $(prefix)/meta/$(target)-*
+	rm -rf $(DESTDIR)$(PREFIX)/lib/lib$(target)-sim.a
+	rm -rf $(DESTDIR)$(PREFIX)/lib/gcc/$(target)
+	rm -rf $(DESTDIR)$(PREFIX)/bin/$(target)-*
+	rm -rf $(DESTDIR)$(PREFIX)/$(target)
+	rm -rf $(DESTDIR)$(PREFIX)/meta/$(target)-*
 
 clean-%:
 	$(MAKE) -f packages/$*/Makefile clean

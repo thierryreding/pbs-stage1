@@ -42,7 +42,7 @@ common-vars = \
 	ARCH=$(arch)
 
 install-vars = \
-	INSTALL_HDR_PATH=$(sysroot-prefix) \
+	INSTALL_HDR_PATH=$(DESTDIR)$(sysroot-prefix) \
 	$(common-vars)
 
 install: | $(pkgbuilddir)

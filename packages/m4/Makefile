@@ -10,16 +10,19 @@ srcdir = $(CURDIR)/packages/$(package)
 
 include packages/common.mk
 
-conf-args = \
-	--prefix=$(prefix)
-
 $(pkgsrcdir)/stamp-patch: | $(pkgsrcdir)
 	cd $(pkgsrcdir) && patch -p1 < $(srcdir)/m4-1.4.18-glibc-change-work-around.patch
 	touch $@
 
+conf-args = \
+	--prefix=$(PREFIX)
+
+install-args = \
+	DESTDIR=$(DESTDIR)
+
 install: $(pkgsrcdir)/stamp-patch | $(pkgsrcdir)
 	cd $(pkgbuilddir) && ./configure $(conf-args)
 	cd $(pkgbuilddir) && $(MAKE) -j $(num-jobs)
-	cd $(pkgbuilddir) && $(MAKE) install
+	cd $(pkgbuilddir) && $(MAKE) $(install-args) install
 
 .PHONY: install
