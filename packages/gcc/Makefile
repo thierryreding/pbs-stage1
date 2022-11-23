@@ -1,5 +1,5 @@
 package = gcc
-version = 11.2.0
+version = 12.2.0
 
 location = http://ftp.gnu.org/pub/gnu/$(package)/$(package)-$(version)
 tarballs = $(package)-$(version).tar.xz
@@ -25,6 +25,7 @@ stage1-conf-args = \
 	--includedir=$(includedir) \
 	--with-pkgversion="PBS $(release)" \
 	--program-prefix=$(target)- \
+	--with-build-time-tools=$(DESTDIR)$(exec-prefix)/bin \
 	--with-sysroot=$(DESTDIR)$(sysroot) \
 	--with-mpfr=$(DESTDIR)$(PREFIX) \
 	--with-gmp=$(DESTDIR)$(PREFIX) \
@@ -105,6 +106,7 @@ stage2-conf-args = \
 	--with-gxx-include-dir=$(includedir)/c++ \
 	--with-pkg-version="PBS $(release)" \
 	--program-prefix=$(target)- \
+	--with-build-time-tools=$(DESTDIR)$(exec-prefix)/bin \
 	--with-sysroot=$(DESTDIR)$(sysroot) \
 	--with-mpfr=$(DESTDIR)$(PREFIX) \
 	--with-gmp=$(DESTDIR)$(PREFIX) \
