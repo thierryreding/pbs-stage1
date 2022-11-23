@@ -1,5 +1,5 @@
 package = glibc
-version = 2.34
+version = 2.36
 
 location = http://ftp.gnu.org/pub/gnu/$(package)
 tarballs = $(package)-$(version).tar.xz
@@ -19,6 +19,10 @@ include packages/common.mk
 ifeq ($(build),$(host))
   common-conf-vars += BUILD_CC=gcc
 endif
+
+$(pkgsrcdir)/stamp-patch: | $(pkgsrcdir)
+	cd $(pkgsrcdir) && patch -p1 < $(srcdir)/patches/mount-header-fixup.patch
+	touch $@
 
 $(pkgbuilddir): | $(pkgsrcdir)
 	mkdir -p $@
@@ -47,7 +51,7 @@ install-vars = \
 $(info stage1-conf-args: $(stage1-conf-args))
 $(info install-vars: $(install-vars))
 
-install-stage1: | $(pkgbuilddir)/stage1
+install-stage1: $(pkgsrcdir)/stamp-patch | $(pkgbuilddir)/stage1
 	cd $(pkgbuilddir)/stage1 && \
 		../../configure $(stage1-conf-args) $(stage1-conf-vars)
 	cd $(pkgbuilddir)/stage1 && \
@@ -69,7 +73,7 @@ stage2-conf-args = \
 stage2-conf-vars = \
 	$(common-conf-vars)
 
-$(pkgbuilddir)/stage2/configparms: | $(pkgbuilddir)/stage2
+$(pkgbuilddir)/stage2/configparms: $(pkgsrcdir)/stamp-patch | $(pkgbuilddir)/stage2
 	echo "slibdir=/usr/lib" > $@
 	echo "rtlddir=/usr/lib" >> $@
 	echo "sbindir=/usr/bin" >> $@
