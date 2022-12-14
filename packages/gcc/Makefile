@@ -32,7 +32,7 @@ stage1-conf-args = \
 	--with-ppl=$(DESTDIR)$(PREFIX) \
 	--with-cloog=$(DESTDIR)$(PREFIX) \
 	--enable-cloog-backend=isl \
-	--enable-languages=c,c++ \
+	--enable-languages=c,c++,fortran \
 	--disable-shared \
 	--disable-nls
 
@@ -113,7 +113,7 @@ stage2-conf-args = \
 	--with-ppl=$(DESTDIR)$(PREFIX) \
 	--with-cloog=$(DESTDIR)$(PREFIX) \
 	--enable-cloog-backend=isl \
-	--enable-languages=c,c++,objc,obj-c++ \
+	--enable-languages=c,c++,objc,obj-c++,fortran \
 	--disable-nls
 
 ifeq ($(arch),arm)
