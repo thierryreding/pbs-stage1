@@ -1,5 +1,5 @@
 package = glibc
-version = 2.36
+version = 2.37
 
 location = http://ftp.gnu.org/pub/gnu/$(package)
 tarballs = $(package)-$(version).tar.xz
@@ -21,7 +21,6 @@ ifeq ($(build),$(host))
 endif
 
 $(pkgsrcdir)/stamp-patch: | $(pkgsrcdir)
-	cd $(pkgsrcdir) && patch -p1 < $(srcdir)/patches/mount-header-fixup.patch
 	touch $@
 
 $(pkgbuilddir): | $(pkgsrcdir)
