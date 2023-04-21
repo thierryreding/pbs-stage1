@@ -1,5 +1,5 @@
 package = boost
-version = 1.80.0
+version = 1.82.0
 
 location = https://boostorg.jfrog.io/artifactory/main/release/$(version)/source/
 tarballs = $(package)_$(subst .,_,$(version)).tar.bz2
