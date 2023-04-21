@@ -1,5 +1,5 @@
 package = gdb
-version = 12.1
+version = 13.1
 
 location = http://ftp.gnu.org/gnu/$(package)
 tarballs = $(package)-$(version).tar.xz
