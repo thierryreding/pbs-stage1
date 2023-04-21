@@ -1,5 +1,5 @@
 package = mpfr
-version = 4.1.1
+version = 4.2.0
 
 location = http://www.mpfr.org/$(package)-$(version)
 tarballs = $(package)-$(version).tar.xz
