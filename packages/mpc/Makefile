@@ -1,5 +1,5 @@
 package = mpc
-version = 1.2.1
+version = 1.3.1
 
 location = https://ftp.gnu.org/gnu/mpc
 tarballs = $(package)-$(version).tar.gz
