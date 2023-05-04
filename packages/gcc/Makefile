@@ -1,5 +1,5 @@
 package = gcc
-version = 12.2.0
+version = 13.1.0
 
 location = http://ftp.gnu.org/pub/gnu/$(package)/$(package)-$(version)
 tarballs = $(package)-$(version).tar.xz
@@ -12,7 +12,7 @@ includedir = $(PREFIX)/lib/gcc/$(target)/$(version)/include
 
 include packages/common.mk
 
-$(pkgbuilddir)/stage1: | $(pkgsrcdir)
+$(pkgbuilddir)/stage1 $(includedir): | $(pkgsrcdir)
 	mkdir -p $@
 
 stage1-conf-args = \
@@ -79,7 +79,7 @@ endif
 install-args = \
 	DESTDIR=$(DESTDIR)
 
-install-stage1: | $(pkgbuilddir)/stage1
+install-stage1: | $(pkgbuilddir)/stage1 $(includedir)
 	cd $(pkgbuilddir)/stage1 && ../../configure $(stage1-conf-args)
 	cd $(pkgbuilddir)/stage1 && $(MAKE) -j $(num-jobs) all-gcc
 	cd $(pkgbuilddir)/stage1 && $(MAKE) $(install-args) install-gcc
