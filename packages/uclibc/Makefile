@@ -1,10 +1,10 @@
 package = uclibc-ng
-version = 1.0.43
+version = 1.0.52
 
 location = https://downloads.uclibc-ng.org/releases/$(version)
 tarballs = uClibc-ng-$(version).tar.xz
 
-pkgsrcdir = $(builddir)/uClibc-$(version)
+pkgsrcdir = $(builddir)/uClibc-ng-$(version)
 pkgbuilddir = $(pkgsrcdir)/target-$(target)
 srcdir = $(CURDIR)/packages/$(package)
 
@@ -37,8 +37,8 @@ stage1-vars = \
 	O=$(CURDIR)/$(pkgbuilddir)/stage1 \
 	$(common-vars)
 
-install-stage1: $(pkgbuilddir)/stage1/.config
-	cd $(pkgsrcdir) && $(MAKE) $(stage1-vars) oldconfig
+install-stage1: $(pkgbuilddir)/stage1/.config | $(pkgsrcdir)
+	cd $(pkgsrcdir) && $(MAKE) $(stage1-vars) olddefconfig
 	cd $(pkgsrcdir) && $(MAKE) $(stage1-vars) install_headers
 
 $(pkgbuilddir)/stage2/.config: $(defconfig) | $(pkgbuilddir)/stage2
@@ -48,7 +48,7 @@ stage2-vars = \
 	O=$(CURDIR)/$(pkgbuilddir)/stage2 \
 	$(common-vars)
 
-install: $(pkgbuilddir)/stage2/.config
+install: $(pkgbuilddir)/stage2/.config | $(pkgsrcdir)
 	cd $(pkgsrcdir) && \
 		$(MAKE) $(stage2-vars) oldconfig
 	cd $(pkgsrcdir) && \
