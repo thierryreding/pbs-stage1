@@ -100,11 +100,11 @@ $(DESTDIR)$(PREFIX)/meta/libtool:
 
 libtool: $(DESTDIR)$(PREFIX)/meta/libtool
 
-$(DESTDIR)$(PREFIX)/meta/pkgconfig:
-	$(MAKE) -f packages/pkgconfig/Makefile install
+$(DESTDIR)$(PREFIX)/meta/pkgconf:
+	$(MAKE) -f packages/pkgconf/Makefile install
 	touch $@
 
-pkgconfig: $(DESTDIR)$(PREFIX)/meta/pkgconfig
+pkgconf: $(DESTDIR)$(PREFIX)/meta/pkgconf
 
 $(DESTDIR)$(PREFIX)/meta/ccache:
 	$(MAKE) -f packages/ccache/Makefile install
@@ -136,7 +136,7 @@ $(DESTDIR)$(PREFIX)/meta/quilt:
 
 quilt: $(DESTDIR)$(PREFIX)/meta/quilt
 
-targets = gcc gdb libtool pkgconfig ccache autoconf autoconf-archive automake quilt
+targets = gcc gdb libtool pkgconf ccache autoconf autoconf-archive automake quilt
 
 all: $(targets)
 
