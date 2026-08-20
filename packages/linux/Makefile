@@ -1,5 +1,5 @@
 package = linux
-version = 6.2
+version = 7.2
 
 major = $(word 1,$(subst ., ,$(version)))
 
@@ -22,6 +22,10 @@ endif
 
 ifeq ($(arch),powerpc64)
   arch = powerpc
+endif
+
+ifeq ($(arch),sh2)
+  arch = sh
 endif
 
 ifeq ($(arch),sh4)
