@@ -1,8 +1,8 @@
 package = binutils
-version = 2.40
+version = 2.47
 
 location = http://ftp.gnu.org/gnu/$(package)
-tarballs = $(package)-$(version).tar.bz2
+tarballs = $(package)-$(version).tar.xz
 
 pkgsrcdir = $(builddir)/$(package)-$(version)
 pkgbuilddir = $(pkgsrcdir)/target-$(target)
