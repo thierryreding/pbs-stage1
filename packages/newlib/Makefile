@@ -1,5 +1,5 @@
 package = newlib
-version = 4.3.0
+version = 4.6.0
 
 location = ftp://sourceware.org/pub/$(package)
 tarballs = $(package)-$(version).tar.gz
