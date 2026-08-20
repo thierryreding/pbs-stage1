@@ -1,5 +1,5 @@
 package = libtool
-version = 2.5.3
+version = 2.6.2
 
 location = http://ftp.gnu.org/pub/gnu/$(package)
 tarballs = $(package)-$(version).tar.xz
