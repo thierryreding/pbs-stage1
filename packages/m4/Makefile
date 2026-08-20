@@ -1,5 +1,5 @@
 package = m4
-version = 1.4.19
+version = 1.4.21
 
 location = http://ftp.gnu.org/gnu/$(package)
 tarballs = $(package)-$(version).tar.xz
