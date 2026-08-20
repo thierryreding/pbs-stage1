@@ -1,5 +1,5 @@
 package = gcc
-version = 13.1.0
+version = 16.2.0
 
 location = http://ftp.gnu.org/pub/gnu/$(package)/$(package)-$(version)
 tarballs = $(package)-$(version).tar.xz
@@ -33,6 +33,7 @@ stage1-conf-args = \
 	--with-cloog=$(DESTDIR)$(PREFIX) \
 	--enable-cloog-backend=isl \
 	--enable-languages=c,c++,fortran \
+	--disable-libatomic \
 	--disable-shared \
 	--disable-nls
 
@@ -50,7 +51,7 @@ ifeq ($(arch),arm)
   endif
 endif
 
-ifeq ($(arch),bfin)
+ifneq ($(filter $(arch),bfin sh xtensa),)
   stage1-conf-args += --disable-threads
 else
   stage1-conf-args += --enable-threads=posix
@@ -58,6 +59,16 @@ endif
 
 ifeq ($(arch),score)
   stage1-conf-args += --enable-obsolete
+endif
+
+# make sure to build the nofpu variant, which is required by certain Linux
+# kernel configurations
+ifeq ($(arch),sh)
+  stage2-conf-args += --enable-multilib --with-multilib-list=m1,m2,m2a,m3e,m4,m4-nofpu
+endif
+
+ifeq ($(arch),sh4)
+  stage1-conf-args += --enable-multilib --with-multilib-list=m4,m4-nofpu
 endif
 
 ifeq ($(os),none)
@@ -130,7 +141,7 @@ ifeq ($(arch),arm)
   endif
 endif
 
-ifeq ($(arch),bfin)
+ifneq ($(filter $(arch),bfin sh xtensa),)
   stage2-conf-args += --disable-threads
 else
   stage2-conf-args += --enable-threads=posix
@@ -145,6 +156,16 @@ ifeq ($(arch),score)
   stage1-conf-args += --enable-obsolete
 endif
 
+# make sure to build the nofpu variant, which is required by certain Linux
+# kernel configurations
+ifeq ($(arch),sh)
+  stage2-conf-args += --enable-multilib --with-multilib-list=m1,m2,m2a,m3e,m4,m4-nofpu
+endif
+
+ifeq ($(arch),sh4)
+  stage2-conf-args += --enable-multilib --with-multilib-list=m4,m4-nofpu
+endif
+
 ifeq ($(arch),x86)
   stage1-conf-args += --disable-multilib
   stage2-conf-args += --disable-multilib
@@ -153,6 +174,8 @@ endif
 ifeq ($(arch),x86_64)
   stage1-conf-args += --disable-multilib
   stage2-conf-args += --disable-multilib
+  #stage1-conf-args += --enable-multilib --with-multilib-list=m64,m32,mx32
+  #stage2-conf-args += --enable-multilib --with-multilib-list=m64,m32,mx32
 endif
 
 ifeq ($(os),none)
