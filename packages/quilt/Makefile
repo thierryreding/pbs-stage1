@@ -1,7 +1,7 @@
 package = quilt
 version = 0.69
 
-location = http://download.savannah.gnu.org/releases/$(package)
+location = https://download-mirror.savannah.gnu.org/releases/$(package)
 tarballs = $(package)-$(version).tar.gz
 
 pkgsrcdir = $(builddir)/$(package)-$(version)
