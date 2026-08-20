@@ -1,5 +1,5 @@
 package = autoconf-archive
-version = 2023.02.20
+version = 2024.10.16
 
 location = http://ftp.gnu.org/gnu/$(package)
 tarballs = $(package)-$(version).tar.xz
