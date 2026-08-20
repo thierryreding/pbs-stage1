@@ -32,3 +32,6 @@ $(extract-xz): $(stampdir)/extract-%: $(downloaddir)/% | $(builddir) $(stampdir)
 	touch $@
 
 $(pkgsrcdir): $(extract-files)
+
+$(pkgbuilddir): | $(pkgsrcdir)
+	mkdir -p $@
